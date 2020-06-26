@@ -7,25 +7,27 @@
 
   tasks:
     - name: Ensure unit tests pass
-      shell: tox -epy37
+      shell:
+        cmd: tox -epy37
+        chdir: ../shakenfist
 
     - name: Clear out old wheels
       file:
-        path: ../dist
+        path: ../shakenfist/dist
         state: absent
 
     - name: Ensure we have a local dist directory
       file:
-        path: ../dist
+        path: ../shakenfist/dist
         state: directory
 
     - name: Build a wheel for shakenfist
       shell:
         cmd: python3 setup.py sdist bdist_wheel
-        chdir: ..
+        chdir: ../shakenfist
 
     - name: Find the most recent wheel for shakenfist
-      shell: ls -rt ../dist/*.whl | tail -1 | sed 's/\.\.\/dist\///'
+      shell: ls -rt ../shakenfist/dist/*.whl | tail -1 | sed 's/\.\.\/shakenfist\/dist\///'
       register: wheel_complex
 
     - name: Extract wheel filename
@@ -153,7 +155,7 @@
 
     - name: Copy shakenfist
       synchronize:
-        src: ../dist/{{hostvars['localhost']['wheel_path']}}
+        src: ../shakenfist/dist/{{hostvars['localhost']['wheel_path']}}
         dest: /srv/shakenfist/
 
     - name: Uninstall shakenfist, if present
