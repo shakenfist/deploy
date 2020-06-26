@@ -1,0 +1,28 @@
+- hosts: localhost
+  gather_facts: yes
+  connection: ssh
+  vars_files:
+    - vars
+
+  tasks:
+    - include: terraform/{{cloud}}/terraform.yml
+
+- hosts: sf-1
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  connection: ssh
+  vars_files:
+    - vars
+
+  tasks:
+    - name: Sync our test suite to the remote node
+      synchronize:
+        src: ../../deploy
+        dest: /srv/shakenfist/
+
+    - name: Execute the suite on the remote node
+      shell:
+        cmd: tox -epy3
+        chdir: /srv/shakenfist/deploy/

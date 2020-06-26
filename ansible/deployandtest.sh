@@ -10,3 +10,4 @@ do
 done
 
 ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" deploy.yml
+ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" test.yml
