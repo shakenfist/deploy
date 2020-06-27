@@ -38,7 +38,6 @@ class TestSystemNamespace(base.BaseTestCase):
             insts.append(i['uuid'])
         self.assertIn(inst['uuid'], insts)
 
-    def test_delete_system_namespace(self):
         self.assertRaises(
             apiclient.ResourceCannotBeDeletedException,
             self.system_client.delete_namespace, 'system')
