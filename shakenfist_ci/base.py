@@ -1,3 +1,5 @@
+import random
+import string
 import testtools
 
 
@@ -14,7 +16,7 @@ class BaseTestCase(testtools.TestCase):
         self._remove_namespace(name)
 
         self.system_client.create_namespace(name, 'test', key)
-        return apiclient(
+        return apiclient.Client(
             base_url=self.system_client.base_url,
             namespace=name,
             key=key)
@@ -23,3 +25,6 @@ class BaseTestCase(testtools.TestCase):
         ns = self.system_client.get_namespaces()
         if name in ns:
             self.system_client.delete_namespace(name)
+
+    def _uniquifier(self):
+        return ''.join(random.choice(string.ascii_lowercase) for i in range(8))
