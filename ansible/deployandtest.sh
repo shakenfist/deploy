@@ -10,4 +10,10 @@ do
 done
 
 ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" deploy.yml
+
+if [ -e terraform/$CLOUD/local.yml ]
+then
+  ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" terraform/$CLOUD/local.yml
+fi
+
 ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" test.yml
