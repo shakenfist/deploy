@@ -40,8 +40,8 @@ class TestStateChanges(base.BaseTestCase):
                 }
             ], None, None)
 
-        # Wait for the instance to fully boot
-        time.sleep(120)
+        console = base.LoggingSocket(inst['node'], inst['console_port'])
+        console.await_login_prompt()
 
         ip = self.test_client.get_instance_interfaces(inst['uuid'])[0]['ipv4']
         out, _ = processutils.execute(
