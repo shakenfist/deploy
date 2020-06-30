@@ -40,6 +40,9 @@ class TestSnapshots(base.BaseTestCase):
         self.assertIsNotNone(inst['uuid'])
         self.assertIsNotNone(inst['node'])
 
+        console = base.LoggingSocket(inst['node'], inst['console_port'])
+        console.await_login_prompt()
+
         snap1 = self.test_client.snapshot_instance(inst['uuid'])
         self.assertIsNotNone(snap1)
         snapshots = self.test_client.get_instance_snapshots(inst['uuid'])
@@ -83,6 +86,9 @@ class TestSnapshots(base.BaseTestCase):
 
         self.assertIsNotNone(inst['uuid'])
         self.assertIsNotNone(inst['node'])
+
+        console = base.LoggingSocket(inst['node'], inst['console_port'])
+        console.await_login_prompt()
 
         snap1 = self.test_client.snapshot_instance(inst['uuid'])
         self.assertIsNotNone(snap1)
