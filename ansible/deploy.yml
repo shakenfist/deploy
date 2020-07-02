@@ -2,8 +2,6 @@
 - hosts: localhost
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - name: Ensure unit tests pass
@@ -54,8 +52,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - include: terraform/{{cloud}}/postboot.yml
@@ -66,9 +62,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-
-  vars_files:
-    - vars
 
   tasks:
     - name: Write syslog file
@@ -91,8 +84,6 @@
   become_method: sudo
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - name: Syslog server is DB server
@@ -142,8 +133,6 @@
   become_method: sudo
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - include: includes/python3.yml
@@ -205,9 +194,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-
-  vars_files:
-    - vars
 
   tasks:
     - include: includes/docker.yml
@@ -381,13 +367,13 @@
           - /srv/shakenfist/grafana/dashboards:/var/lib/grafana/dashboards
           - /srv/shakenfist/grafana/config:/etc/grafana
         env:
-          GF_SECURITY_ADMIN_PASSWORD: "{{db_user_password}}"
+          GF_SECURITY_ADMIN_PASSWORD: "{{ADMIN_PASSWORD}}"
         ports:
           - 3000:3000
         user: "{{sfgrafana_user_complex.uid}}"
 
     - name: Create an admin namespace called "system" with a password configured
-      shell: sf-passwd deploy "{{api_admin_password}}"
+      shell: sf-passwd deploy "{{ADMIN_PASSWORD}}"
 
 - hosts: hypervisors
   any_errors_fatal: true
@@ -395,8 +381,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - name: Create storage directory
