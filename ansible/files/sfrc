@@ -6,5 +6,5 @@ export ETCDCTL_API=3
 
 # Client auth
 export SHAKENFIST_NAMESPACE="system"
-export SHAKENFIST_KEY="{{api_admin_password}}"
+export SHAKENFIST_KEY="{{ADMIN_PASSWORD}}"
 export SHAKENFIST_API_URL="http://localhost:13000"
