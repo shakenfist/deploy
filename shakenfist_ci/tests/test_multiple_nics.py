@@ -57,8 +57,7 @@ sudo /etc/init.d/S40network restart"""
 
         self.assertIsNotNone(inst['uuid'])
 
-        console = base.LoggingSocket(inst['node'], inst['console_port'])
-        console.await_login_prompt()
+        self._await_cirros_login_prompt(inst['uuid'])
 
         ifaces = self.test_client.get_instance_interfaces(inst['uuid'])
         self.assertEqual(2, len(ifaces))

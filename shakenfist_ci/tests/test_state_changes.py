@@ -40,8 +40,7 @@ class TestStateChanges(base.BaseTestCase):
                 }
             ], None, None)
 
-        console = base.LoggingSocket(inst['node'], inst['console_port'])
-        console.await_login_prompt()
+        self._await_cirros_login_prompt(inst['uuid'])
 
         ip = self.test_client.get_instance_interfaces(inst['uuid'])[0]['ipv4']
         out, _ = processutils.execute(

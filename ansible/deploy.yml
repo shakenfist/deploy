@@ -142,6 +142,9 @@
         path: /srv/shakenfist/src/
         state: absent
 
+    - name: Remove old wheels
+      shell: rm /srv/shakenfist/shakenfist-*-py3-none-any.whl
+
     - name: Copy shakenfist
       synchronize:
         src: ../shakenfist/dist/{{hostvars['localhost']['wheel_path']}}
@@ -201,6 +204,10 @@
         name: prometheus
         state: latest
 
+    - name: Read local prometheus customizations
+      set_fact:
+        prom_additional: "{{lookup('file', 'terraform/{{cloud}}/prometheus.yml') }}"
+
     - name: Write prometheus configuration file
       copy:
         content: |
@@ -223,6 +230,8 @@
                         '{{hostvars[svr]['node_ip']}}:13001',
                       {% endfor %}
                     ]
+
+          {{prom_additional}}
         dest: /etc/prometheus/prometheus.yml
         owner: root
         mode: u=rw,g=r,o=r
@@ -356,3 +365,4 @@
         name: sf
         enabled: yes
         state: restarted
+        daemon_reload: yes

@@ -9,7 +9,8 @@ class TestAuth(base.BaseTestCase):
         key = self._uniquifier()
 
         self.assertNotIn(name, self.system_client.get_namespaces())
-        self.system_client.create_namespace(name, 'test', key)
+        self.system_client.create_namespace(name)
+        self.system_client.add_namespace_key(name, 'test', key)
         self.assertIn(name, self.system_client.get_namespaces())
 
         self.assertRaises(apiclient.ResourceNotFoundException,

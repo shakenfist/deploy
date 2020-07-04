@@ -18,8 +18,8 @@ Environment=SHAKENFIST_AUTH_SECRET_SEED="{{hostvars['localhost']['auth_secret']}
 # HAS_MIRROR ansible variable. Define HAS_MIRROR with any value to use
 # a local mirror, otherwise leave the variable undefined.
 {% if HAS_MIRROR is defined %}
-Environment=SHAKENFIST_DOWNLOAD_URL_CIRROS="http://sf-1/mirrors/download.cirros-cloud.net/"
-Environment=SHAKENFIST_DOWNLOAD_URL_UBUNTU="http://sf-1/mirrors/cloud-images.ubuntu.com/"
+Environment=SHAKENFIST_DOWNLOAD_URL_CIRROS="http://sf-1/mirrors/download.cirros-cloud.net/%(vernum)s/cirros-%(vernum)s-x86_64-disk.img"
+Environment=SHAKENFIST_DOWNLOAD_URL_UBUNTU="http://sf-1/mirrors/cloud-images.ubuntu.com/%(base)s/%(vername)s/current/%(vername)s-server-cloudimg-amd64.img"
 {% endif %}
 
 ExecStart=/bin/sh -c 'sf-daemon'

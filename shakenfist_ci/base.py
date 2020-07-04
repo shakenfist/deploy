@@ -9,6 +9,10 @@ import time
 from shakenfist.client import apiclient
 
 
+class TimeoutException(Exception):
+    pass
+
+
 class BaseTestCase(testtools.TestCase):
     def setUp(self):
         super(BaseTestCase, self).setUp()
@@ -18,7 +22,8 @@ class BaseTestCase(testtools.TestCase):
     def _make_namespace(self, name, key):
         self._remove_namespace(name)
 
-        self.system_client.create_namespace(name, 'test', key)
+        self.system_client.create_namespace(name)
+        self.system_client.add_namespace_key(name, 'test', key)
         return apiclient.Client(
             base_url=self.system_client.base_url,
             namespace=name,
@@ -31,6 +36,19 @@ class BaseTestCase(testtools.TestCase):
 
     def _uniquifier(self):
         return ''.join(random.choice(string.ascii_lowercase) for i in range(8))
+
+    def _await_cirros_login_prompt(self, instance_uuid):
+        start_time = time.time()
+
+        while time.time() - start_time < 300:
+            for event in self.system_client.get_instance_events(instance_uuid):
+                if (event['operation'] == 'trigger' and
+                        event['message'] == 'cirros login prompt'):
+                    return
+
+            time.sleep(5)
+
+        raise TimeoutException()
 
 
 class LoggingSocket(object):
