@@ -40,7 +40,7 @@ class TestSnapshots(base.BaseTestCase):
         self.assertIsNotNone(inst['uuid'])
         self.assertIsNotNone(inst['node'])
 
-        self._await_cirros_login_prompt(inst['uuid'])
+        self._await_login_prompt(inst['uuid'])
 
         snap1 = self.test_client.snapshot_instance(inst['uuid'])
         self.assertIsNotNone(snap1)

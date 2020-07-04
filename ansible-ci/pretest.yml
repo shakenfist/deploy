@@ -49,17 +49,9 @@
         group: root
         mode: u=rx
 
-    - name: Copy example.tf
-      copy:
-        src: ../example.tf
-        dest: /root/example.tf
-        owner: root
-        group: root
-        mode: u=r,g=r,o=r
-
     - name: Copy cleanup script
       copy:
-        src: ../cleanup.sh
+        src: ../shakenfist/cleanup.sh
         dest: /srv/shakenfist/cleanup.sh
         owner: root
         group: root

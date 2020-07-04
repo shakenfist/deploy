@@ -40,8 +40,11 @@ class TestStateChanges(base.BaseTestCase):
                 }
             ], None, None)
 
-        self._await_cirros_login_prompt(inst['uuid'])
+        self._await_login_prompt(inst['uuid'])
 
+        # NOTE(mikal): Ubuntu 18.04 has a bug where DHCP doesn't always work in the
+        # cloud image. This is ok though, because we should be using the config drive
+        # style interface information anyway.
         ip = self.test_client.get_instance_interfaces(inst['uuid'])[0]['ipv4']
         out, _ = processutils.execute(
             'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
