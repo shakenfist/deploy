@@ -5,8 +5,6 @@
 - hosts: localhost
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: "{{ansible_root}}/terraform/{{cloud}}/terraform.yml"
@@ -17,8 +15,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _setup.yml
@@ -54,8 +50,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _util_instance_start.yml
@@ -71,8 +65,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     # NOTE(mikal): Ubuntu 18.04 has a bug where DHCP doesn't always work in the
@@ -93,8 +85,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: Deleting an instance hosted locally should work
@@ -120,8 +110,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _util_instance_reboot.yml
@@ -169,8 +157,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: Deleting an instance hosted remotely should work
@@ -188,8 +174,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: We shouldn't have any VMs or mesh networks running on sf-2

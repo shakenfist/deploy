@@ -1,8 +1,6 @@
 - hosts: localhost
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - include: includes/terraform.yml
@@ -12,8 +10,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - name: Record the state of the mesh before reboot
@@ -30,8 +26,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - name: Rebooting a node should retain its instances
@@ -51,8 +45,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - name: Record the state of the mesh after reboot
@@ -69,8 +61,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - include: tests/cirros_networking_tests.yml

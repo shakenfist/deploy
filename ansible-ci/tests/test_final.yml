@@ -5,8 +5,6 @@
 - hosts: localhost
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: ../terraform/{{cloud}}/terraform.yml
@@ -21,8 +19,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: Delete instances and networks, and validate
@@ -59,8 +55,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: We should not have any VXLAN interfaces left

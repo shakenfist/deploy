@@ -5,8 +5,6 @@
 - hosts: localhost
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: ../terraform/{{cloud}}/terraform.yml
@@ -17,8 +15,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _setup.yml
@@ -54,8 +50,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: Start a cirros instance on sf-1
@@ -94,8 +88,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _util_instance_start.yml
@@ -111,8 +103,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     # NOTE(mikal): Ubuntu 18.04 has a bug where DHCP doesn't always work in the
@@ -133,8 +123,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _util_network_create.yml
@@ -176,8 +164,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _util_network_create.yml
@@ -219,8 +205,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _util_network_create.yml
@@ -254,8 +238,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _util_instance_start.yml
@@ -291,8 +273,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: Network node outer namespace can ping floating IP
@@ -319,8 +299,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: Try more detailed network specifications

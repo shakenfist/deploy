@@ -5,8 +5,6 @@
 - hosts: localhost
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: ../terraform/{{cloud}}/terraform.yml
@@ -21,8 +19,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _setup.yml
@@ -58,8 +54,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: Ensure that the instances appear in the dhcp config on the network node
@@ -83,8 +77,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: Ensure that dhcp is not configured on a non-network-node
@@ -112,8 +104,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - include: _util_network_cirros_validate.yml
@@ -126,8 +116,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - ../vars
 
   tasks:
     - name: The instance on sf-1 should be able to ping the instance on sf-2

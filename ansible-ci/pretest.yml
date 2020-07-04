@@ -5,8 +5,6 @@
 - hosts: localhost
   gather_facts: yes
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - include: terraform/{{cloud}}/terraform.yml
@@ -17,8 +15,6 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
-  vars_files:
-    - vars
 
   tasks:
     - name: Create telnet console helper
