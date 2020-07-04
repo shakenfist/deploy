@@ -54,53 +54,29 @@ class TestStateChanges(base.BaseTestCase):
         # Soft reboot
         self.test_client.reboot_instance(inst['uuid'])
         self._await_login_prompt(inst['uuid'])
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (self.net['uuid'], ip),
-            shell=True)
-        self.assertEqual(out.rstrip(), '1')
+        self._test_ping(self.net['uuid'], ip)
 
         # Hard reboot
         self.test_client.reboot_instance(inst['uuid'], hard=True)
         self._await_login_prompt(inst['uuid'])
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (self.net['uuid'], ip),
-            shell=True)
-        self.assertEqual(out.rstrip(), '1')
+        self._test_ping(self.net['uuid'], ip)
 
         # Power off
         self.test_client.power_off_instance(inst['uuid'])
         time.sleep(5)
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (self.net['uuid'], ip),
-            shell=True)
-        self.assertEqual(out.rstrip(), '0')
+        self._test_ping(self.net['uuid'], ip, result='0')
 
         # Power on
         self.test_client.power_on_instance(inst['uuid'])
         self._await_login_prompt(inst['uuid'])
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (self.net['uuid'], ip),
-            shell=True)
-        self.assertEqual(out.rstrip(), '1')
+        self._test_ping(self.net['uuid'], ip)
 
         # Pause
         self.test_client.pause_instance(inst['uuid'])
         time.sleep(5)
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (self.net['uuid'], ip),
-            shell=True)
-        self.assertEqual(out.rstrip(), '0')
+        self._test_ping(self.net['uuid'], ip, result='0')
 
         # Unpause
         self.test_client.unpause_instance(inst['uuid'])
         self._await_login_prompt(inst['uuid'])
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (self.net['uuid'], ip),
-            shell=True)
-        self.assertEqual(out.rstrip(), '1')
+        self._test_ping(self.net['uuid'], ip)

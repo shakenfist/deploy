@@ -5,6 +5,7 @@ import testtools
 import telnetlib
 import time
 
+from oslo_concurrency import processutils
 
 from shakenfist.client import apiclient
 
@@ -49,6 +50,13 @@ class BaseTestCase(testtools.TestCase):
             time.sleep(5)
 
         raise TimeoutException()
+
+    def _test_ping(self, network_uuid, ip, result='1'):
+        out, _ = processutils.execute(
+            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
+            % (network_uuid, ip),
+            shell=True)
+        self.assertEqual(result, out.rstrip())
 
 
 class LoggingSocket(object):

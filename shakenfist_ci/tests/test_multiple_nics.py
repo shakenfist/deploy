@@ -63,8 +63,4 @@ sudo /etc/init.d/S40network restart"""
         self.assertEqual(2, len(ifaces))
 
         for iface in ifaces:
-            out, _ = processutils.execute(
-                'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-                % (iface['network_uuid'], iface['ipv4']),
-                shell=True)
-            self.assertEqual(out.rstrip(), '1')
+            self._test_ping(iface['network_uuid'], iface['ipv4'])

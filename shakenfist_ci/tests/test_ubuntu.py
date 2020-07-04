@@ -1,4 +1,3 @@
-from oslo_concurrency import processutils
 import time
 
 from shakenfist.client import apiclient
@@ -46,11 +45,7 @@ class TestUbuntu(base.BaseTestCase):
         # cloud image. This is ok though, because we should be using the config drive
         # style interface information anyway.
         ip = self.test_client.get_instance_interfaces(inst['uuid'])[0]['ipv4']
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (self.net['uuid'], ip),
-            shell=True)
-        self.assertEqual(out.rstrip(), '1')
+        self._test_ping(self.net['uuid'], ip)
 
         self.test_client.delete_instance(inst['uuid'])
         inst_uuids = []
