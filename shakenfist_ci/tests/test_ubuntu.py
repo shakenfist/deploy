@@ -6,9 +6,9 @@ from shakenfist.client import apiclient
 from shakenfist_ci import base
 
 
-class TestStateChanges(base.BaseTestCase):
+class TestUbuntu(base.BaseTestCase):
     def setUp(self):
-        super(TestStateChanges, self).setUp()
+        super(TestUbuntu, self).setUp()
 
         self.namespace = 'ci-state-%s' % self._uniquifier()
         self.namespace_key = self._uniquifier()
@@ -18,7 +18,7 @@ class TestStateChanges(base.BaseTestCase):
             '192.168.242.0/24', True, True, '%s-net' % self.namespace)
 
     def tearDown(self):
-        super(TestStateChanges, self).tearDown()
+        super(TestUbuntu, self).tearDown()
         for inst in self.test_client.get_instances():
             self.test_client.delete_instance(inst['uuid'])
         self.test_client.delete_network(self.net['uuid'])
