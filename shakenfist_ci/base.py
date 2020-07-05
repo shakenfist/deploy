@@ -38,14 +38,17 @@ class BaseTestCase(testtools.TestCase):
     def _uniquifier(self):
         return ''.join(random.choice(string.ascii_lowercase) for i in range(8))
 
-    def _await_login_prompt(self, instance_uuid):
+    def _await_login_prompt(self, instance_uuid, after=None):
         start_time = time.time()
 
         while time.time() - start_time < 300:
             for event in self.system_client.get_instance_events(instance_uuid):
+                if after and event['timestamp'] < after:
+                    continue
+
                 if (event['operation'] == 'trigger' and
                         event['message'] == 'login prompt'):
-                    return
+                    return event['timestamp']
 
             time.sleep(5)
 
