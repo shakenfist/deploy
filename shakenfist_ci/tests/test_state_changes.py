@@ -48,30 +48,36 @@ class TestStateChanges(base.BaseTestCase):
 
         # Soft reboot
         self.test_client.reboot_instance(inst['uuid'])
+        time.sleep(1)
         last_prompt = self._await_login_prompt(inst['uuid'], after=last_prompt)
         self._test_ping(self.net['uuid'], ip)
 
         # Hard reboot
         self.test_client.reboot_instance(inst['uuid'], hard=True)
+        time.sleep(1)
         last_prompt = self._await_login_prompt(inst['uuid'], after=last_prompt)
         self._test_ping(self.net['uuid'], ip)
 
         # Power off
         self.test_client.power_off_instance(inst['uuid'])
+        time.sleep(1)
         time.sleep(5)
         self._test_ping(self.net['uuid'], ip, result='0')
 
         # Power on
         self.test_client.power_on_instance(inst['uuid'])
+        time.sleep(1)
         last_prompt = self._await_login_prompt(inst['uuid'], after=last_prompt)
         self._test_ping(self.net['uuid'], ip)
 
         # Pause
         self.test_client.pause_instance(inst['uuid'])
+        time.sleep(1)
         time.sleep(5)
         self._test_ping(self.net['uuid'], ip, result='0')
 
         # Unpause
         self.test_client.unpause_instance(inst['uuid'])
+        time.sleep(1)
         self._await_login_prompt(inst['uuid'], after=last_prompt)
         self._test_ping(self.net['uuid'], ip)
