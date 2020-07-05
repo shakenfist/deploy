@@ -24,9 +24,9 @@ then
   do
     ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" $playbook
   done
+
+  ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" ../ansible-ci/tests/test_final.yml
+
+  # New fangled python CI
+  ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" test.yml
 fi
-
-ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" ../ansible-ci/tests/test_final.yml
-
-# New fangled python CI
-ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" test.yml
