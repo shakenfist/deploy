@@ -15,7 +15,6 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
-    "id": 2,
     "links": [],
     "panels": [
         {
@@ -34,7 +33,7 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 8,
-                "w": 7,
+                "w": 5,
                 "x": 0,
                 "y": 0
             },
@@ -128,8 +127,8 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 8,
-                "w": 7,
-                "x": 7,
+                "w": 5,
+                "x": 5,
                 "y": 0
             },
             "hiddenSeries": false,
@@ -222,8 +221,8 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 8,
-                "w": 7,
-                "x": 14,
+                "w": 5,
+                "x": 10,
                 "y": 0
             },
             "hiddenSeries": false,
@@ -308,6 +307,102 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 8,
+                "w": 5,
+                "x": 15,
+                "y": 0
+            },
+            "hiddenSeries": false,
+            "id": 22,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum(rate(grpc_server_started_total[5m]))",
+                    "interval": "",
+                    "legendFormat": "Rate",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "etcd All RPCs",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:519",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "$$hashKey": "object:520",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
                     "custom": {
                         "align": null
                     },
@@ -332,7 +427,7 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 7,
+                "w": 5,
                 "x": 0,
                 "y": 8
             },
@@ -443,8 +538,8 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 7,
-                "x": 7,
+                "w": 5,
+                "x": 5,
                 "y": 8
             },
             "hiddenSeries": false,
@@ -538,8 +633,8 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 7,
-                "x": 14,
+                "w": 5,
+                "x": 10,
                 "y": 8
             },
             "hiddenSeries": false,
@@ -631,8 +726,104 @@
             "fill": 1,
             "fillGradient": 0,
             "gridPos": {
+                "h": 8,
+                "w": 5,
+                "x": 15,
+                "y": 8
+            },
+            "hiddenSeries": false,
+            "id": 25,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum(rate(grpc_server_handled_total{grpc_code!=\\\"OK\\\"}[5m])",
+                    "interval": "",
+                    "legendFormat": "Rate",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "etcd Failed RPCs",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:519",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "$$hashKey": "object:520",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
                 "h": 7,
-                "w": 7,
+                "w": 5,
                 "x": 0,
                 "y": 15
             },
@@ -726,8 +917,8 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 7,
-                "x": 7,
+                "w": 5,
+                "x": 5,
                 "y": 15
             },
             "hiddenSeries": false,
@@ -820,8 +1011,8 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 7,
-                "x": 14,
+                "w": 5,
+                "x": 10,
                 "y": 15
             },
             "hiddenSeries": false,
@@ -900,6 +1091,102 @@
         },
         {
             "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 5,
+                "x": 15,
+                "y": 16
+            },
+            "hiddenSeries": false,
+            "id": 23,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "etcd_mvcc_db_total_size_in_bytes",
+                    "interval": "",
+                    "legendFormat": "{{instance}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "etcd DB Size",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:370",
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "$$hashKey": "object:371",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
             "bars": true,
             "dashLength": 10,
             "dashes": false,
@@ -914,7 +1201,7 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 7,
+                "w": 5,
                 "x": 0,
                 "y": 22
             },
@@ -1008,8 +1295,8 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 7,
-                "x": 7,
+                "w": 5,
+                "x": 5,
                 "y": 22
             },
             "hiddenSeries": false,
@@ -1102,8 +1389,8 @@
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
-                "w": 7,
-                "x": 14,
+                "w": 5,
+                "x": 10,
                 "y": 22
             },
             "hiddenSeries": false,
@@ -1179,6 +1466,108 @@
                 "align": false,
                 "alignLevel": null
             }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 5,
+                "x": 15,
+                "y": 23
+            },
+            "hiddenSeries": false,
+            "id": 24,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "options": {
+                "dataLinks": []
+            },
+            "percentage": false,
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "rate(etcd_network_client_grpc_received_bytes_total[5m])",
+                    "interval": "",
+                    "legendFormat": "{{instance}} In",
+                    "refId": "A"
+                },
+                {
+                    "expr": "rate(etcd_network_client_grpc_sent_bytes_total[5m])",
+                    "interval": "",
+                    "legendFormat": "{{instance}} Out",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "etcd Traffic",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "$$hashKey": "object:419",
+                    "format": "bps",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "$$hashKey": "object:420",
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         }
     ],
     "refresh": "10s",
@@ -1191,7 +1580,7 @@
         "list": []
     },
     "time": {
-        "from": "now-30m",
+        "from": "now-3h",
         "to": "now"
     },
     "timepicker": {

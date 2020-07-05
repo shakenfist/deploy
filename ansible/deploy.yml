@@ -229,6 +229,13 @@
                         '{{hostvars[svr]['node_ip']}}:13001',
                       {% endfor %}
                     ]
+            - job_name: 'etcd'
+              static_configs:
+                - targets: [
+                      {% for svr in groups.allsf %}
+                        '{{hostvars[svr]['node_ip']}}:2379',
+                      {% endfor %}
+                    ]
 
           {{prom_additional}}
         dest: /etc/prometheus/prometheus.yml
