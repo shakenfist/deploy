@@ -55,7 +55,7 @@ class BaseTestCase(testtools.TestCase):
         out, _ = processutils.execute(
             'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
             % (network_uuid, ip),
-            shell=True)
+            shell=True, check_exit_code=[0, 1])
         self.assertEqual(result, out.rstrip())
 
 
