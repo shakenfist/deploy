@@ -25,20 +25,6 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
-resource "aws_instance" "sfdb" {
-  ami           = data.aws_ami.ubuntu.id
-  instance_type = "t1.micro"
-  key_name      = "mikal-aws"
-  root_block_device {
-    delete_on_termination = true
-    volume_size           = 8
-  }
-  tags = {
-    Name = "sfdb"
-  }
-  vpc_security_group_ids = ["sg-0ff088c6b3e980ffd", "sg-0008a21805a524651"]
-}
-
 resource "aws_instance" "sf_1" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "c5d.metal"
@@ -50,7 +36,7 @@ resource "aws_instance" "sf_1" {
   tags = {
     Name = "sf-1"
   }
-  vpc_security_group_ids = ["sg-0ff088c6b3e980ffd", "sg-0ae4a0742f580e222", "sg-0f4481fe67c40d267"]
+  vpc_security_group_ids = ["sg-0ff088c6b3e980ffd", "sg-0008a21805a524651"]
 }
 
 resource "aws_instance" "sf_2" {
@@ -67,6 +53,20 @@ resource "aws_instance" "sf_2" {
   vpc_security_group_ids = ["sg-0ff088c6b3e980ffd", "sg-0ae4a0742f580e222", "sg-0f4481fe67c40d267"]
 }
 
+resource "aws_instance" "sf_3" {
+  ami           = data.aws_ami.ubuntu.id
+  instance_type = "c5d.metal"
+  key_name      = "mikal-aws"
+  root_block_device {
+    delete_on_termination = true
+    volume_size           = 20
+  }
+  tags = {
+    Name = "sf-3"
+  }
+  vpc_security_group_ids = ["sg-0ff088c6b3e980ffd", "sg-0ae4a0742f580e222", "sg-0f4481fe67c40d267"]
+}
+
 output "sf_1_external" {
   value = aws_instance.sf_1.public_ip
 }
@@ -75,8 +75,8 @@ output "sf_2_external" {
   value = aws_instance.sf_2.public_ip
 }
 
-output "sfdb_external" {
-  value = aws_instance.sfdb.public_ip
+output "sf_3_external" {
+  value = aws_instance.sf_3.public_ip
 }
 
 output "sf_1_internal" {
@@ -87,6 +87,6 @@ output "sf_2_internal" {
   value = aws_instance.sf_2.private_ip
 }
 
-output "sfdb_internal" {
-  value = aws_instance.sfdb.private_ip
+output "sf_3_internal" {
+  value = aws_instance.sf_3.private_ip
 }
