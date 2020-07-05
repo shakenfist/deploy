@@ -15,10 +15,8 @@ class TestStateChanges(base.BaseTestCase):
         self.namespace_key = self._uniquifier()
         self.test_client = self._make_namespace(
             self.namespace, self.namespace_key)
-        self.net_one = self.test_client.allocate_network(
+        self.net = self.test_client.allocate_network(
             '192.168.242.0/24', True, True, '%s-net-one' % self.namespace)
-        self.net_two = self.test_client.allocate_network(
-            '192.168.243.0/24', True, True, '%s-net-two' % self.namespace)
 
     def tearDown(self):
         super(TestStateChanges, self).tearDown()
@@ -33,11 +31,8 @@ class TestStateChanges(base.BaseTestCase):
             'cirros', 1, 1,
             [
                 {
-                    'network_uuid': self.net_one['uuid']
+                    'network_uuid': self.net['uuid']
                 },
-                {
-                    'network_uuid': self.net_two['uuid']
-                }
             ],
             [
                 {
