@@ -1,6 +1,7 @@
-from oslo_concurrency import processutils
+import base64
 import time
 
+from oslo_concurrency import processutils
 from shakenfist.client import apiclient
 
 from shakenfist_ci import base
@@ -10,48 +11,73 @@ class TestStateChanges(base.BaseTestCase):
     def setUp(self):
         super(TestStateChanges, self).setUp()
 
-        self.namespace = 'ci-state-%s' % self._uniquifier()
+        self.namespace = 'ci-multinic-%s' % self._uniquifier()
         self.namespace_key = self._uniquifier()
         self.test_client = self._make_namespace(
             self.namespace, self.namespace_key)
         self.net = self.test_client.allocate_network(
-            '192.168.242.0/24', True, True, '%s-net' % self.namespace)
+            '192.168.242.0/24', True, True, '%s-net-one' % self.namespace)
 
     def tearDown(self):
         super(TestStateChanges, self).tearDown()
         for inst in self.test_client.get_instances():
             self.test_client.delete_instance(inst['uuid'])
-        self.test_client.delete_network(self.net['uuid'])
+        for net in self.test_client.get_networks():
+            self.test_client.delete_network(net['uuid'])
         self._remove_namespace(self.namespace)
 
-    def test_ubuntu_pings(self):
+    def test_simple(self):
         inst = self.test_client.create_instance(
-            'ubuntu', 1, 1,
+            'cirros', 1, 1,
             [
                 {
                     'network_uuid': self.net['uuid']
-                }
+                },
             ],
             [
                 {
                     'size': 8,
-                    'base': 'ubuntu:18.04',
+                    'base': 'cirros',
                     'type': 'disk'
                 }
             ], None, None)
-
-        console = base.LoggingSocket(inst['node'], inst['console_port'])
-        console.await_login_prompt()
-
         ip = self.test_client.get_instance_interfaces(inst['uuid'])[0]['ipv4']
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (self.net['uuid'], ip),
-            shell=True)
-        self.assertEqual(out.rstrip(), '1')
 
-        self.test_client.delete_instance(inst['uuid'])
-        inst_uuids = []
-        for i in self.test_client.get_instances():
-            inst_uuids.append(i['uuid'])
-        self.assertNotIn(inst['uuid'], inst_uuids)
+        self.assertIsNotNone(inst['uuid'])
+        last_prompt = self._await_login_prompt(inst['uuid'])
+
+        # Soft reboot
+        self.test_client.reboot_instance(inst['uuid'])
+        time.sleep(1)
+        last_prompt = self._await_login_prompt(inst['uuid'], after=last_prompt)
+        self._test_ping(self.net['uuid'], ip)
+
+        # Hard reboot
+        self.test_client.reboot_instance(inst['uuid'], hard=True)
+        time.sleep(1)
+        last_prompt = self._await_login_prompt(inst['uuid'], after=last_prompt)
+        self._test_ping(self.net['uuid'], ip)
+
+        # Power off
+        self.test_client.power_off_instance(inst['uuid'])
+        time.sleep(1)
+        time.sleep(5)
+        self._test_ping(self.net['uuid'], ip, result='0')
+
+        # Power on
+        self.test_client.power_on_instance(inst['uuid'])
+        time.sleep(1)
+        last_prompt = self._await_login_prompt(inst['uuid'], after=last_prompt)
+        self._test_ping(self.net['uuid'], ip)
+
+        # Pause
+        self.test_client.pause_instance(inst['uuid'])
+        time.sleep(1)
+        time.sleep(5)
+        self._test_ping(self.net['uuid'], ip, result='0')
+
+        # Unpause
+        self.test_client.unpause_instance(inst['uuid'])
+        time.sleep(1)
+        self._await_login_prompt(inst['uuid'], after=last_prompt)
+        self._test_ping(self.net['uuid'], ip)

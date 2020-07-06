@@ -57,15 +57,10 @@ sudo /etc/init.d/S40network restart"""
 
         self.assertIsNotNone(inst['uuid'])
 
-        console = base.LoggingSocket(inst['node'], inst['console_port'])
-        console.await_login_prompt()
+        self._await_login_prompt(inst['uuid'])
 
         ifaces = self.test_client.get_instance_interfaces(inst['uuid'])
         self.assertEqual(2, len(ifaces))
 
         for iface in ifaces:
-            out, _ = processutils.execute(
-                'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-                % (iface['network_uuid'], iface['ipv4']),
-                shell=True)
-            self.assertEqual(out.rstrip(), '1')
+            self._test_ping(iface['network_uuid'], iface['ipv4'])

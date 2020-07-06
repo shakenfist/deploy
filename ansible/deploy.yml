@@ -122,7 +122,6 @@
   roles:
     - role: andrewrothstein.etcd-cluster
       etcd_secure: False
-      etcd_data_dir: /srv/shakenfist/etcd
       etcd_cluster_name: shakenfist
       etcd_enable_v2: False
       etcd_master_group_name: etcd_master
@@ -141,6 +140,9 @@
       file:
         path: /srv/shakenfist/src/
         state: absent
+
+    - name: Remove old wheels
+      shell: rm /srv/shakenfist/shakenfist-*-py3-none-any.whl
 
     - name: Copy shakenfist
       synchronize:
@@ -201,6 +203,10 @@
         name: prometheus
         state: latest
 
+    - name: Read local prometheus customizations
+      set_fact:
+        prom_additional: "{{lookup('file', 'terraform/{{cloud}}/prometheus.yml') }}"
+
     - name: Write prometheus configuration file
       copy:
         content: |
@@ -223,6 +229,15 @@
                         '{{hostvars[svr]['node_ip']}}:13001',
                       {% endfor %}
                     ]
+            - job_name: 'etcd'
+              static_configs:
+                - targets: [
+                      {% for svr in groups.allsf %}
+                        '{{hostvars[svr]['node_ip']}}:2379',
+                      {% endfor %}
+                    ]
+
+          {{prom_additional}}
         dest: /etc/prometheus/prometheus.yml
         owner: root
         mode: u=rw,g=r,o=r
@@ -356,3 +371,4 @@
         name: sf
         enabled: yes
         state: restarted
+        daemon_reload: yes

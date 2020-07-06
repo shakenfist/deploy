@@ -5,8 +5,13 @@ import testtools
 import telnetlib
 import time
 
+from oslo_concurrency import processutils
 
 from shakenfist.client import apiclient
+
+
+class TimeoutException(Exception):
+    pass
 
 
 class BaseTestCase(testtools.TestCase):
@@ -18,7 +23,8 @@ class BaseTestCase(testtools.TestCase):
     def _make_namespace(self, name, key):
         self._remove_namespace(name)
 
-        self.system_client.create_namespace(name, 'test', key)
+        self.system_client.create_namespace(name)
+        self.system_client.add_namespace_key(name, 'test', key)
         return apiclient.Client(
             base_url=self.system_client.base_url,
             namespace=name,
@@ -31,6 +37,29 @@ class BaseTestCase(testtools.TestCase):
 
     def _uniquifier(self):
         return ''.join(random.choice(string.ascii_lowercase) for i in range(8))
+
+    def _await_login_prompt(self, instance_uuid, after=None):
+        start_time = time.time()
+
+        while time.time() - start_time < 300:
+            for event in self.system_client.get_instance_events(instance_uuid):
+                if after and event['timestamp'] < after:
+                    continue
+
+                if (event['operation'] == 'trigger' and
+                        event['message'] == 'login prompt'):
+                    return event['timestamp']
+
+            time.sleep(5)
+
+        raise TimeoutException()
+
+    def _test_ping(self, network_uuid, ip, result='1'):
+        out, _ = processutils.execute(
+            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
+            % (network_uuid, ip),
+            shell=True, check_exit_code=[0, 1])
+        self.assertEqual(result, out.rstrip())
 
 
 class LoggingSocket(object):
