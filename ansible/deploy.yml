@@ -142,7 +142,9 @@
         state: absent
 
     - name: Remove old wheels
-      shell: rm /srv/shakenfist/shakenfist-*-py3-none-any.whl
+      file:
+        path: /srv/shakenfist/shakenfist-*-py3-none-any.whl
+        state: absent
 
     - name: Copy shakenfist
       synchronize:
