@@ -8,7 +8,7 @@
 
 #### Required settings
 CLOUD=$1
-if [ -z "$CLOUD"]
+if [ -z "$CLOUD" ]
 then
   echo ==== CLOUD must be specified: aws, gcp, metal, openstack
   exit 1
