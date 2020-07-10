@@ -12,6 +12,8 @@ Installation
 
 Build an acceptable deployment, noting that only Ubuntu is supported.
 
+## Google Cloud
+
 On Google Cloud, you need to enable nested virt first:
 
 ```bash
@@ -40,4 +42,18 @@ git clone https://github.com/shakenfist/deploy
 cd deploy/ansible
 ansible-galaxy install andrewrothstein.etcd-cluster
 ansible-playbook -i ansible/hosts-gcp $VARIABLES_AS_ABOVE ansible/deploy.yml
+```
+
+### VMWare ESXi (Recommended for testing only)
+
+The "metal" installation option can used to create a test cluster.
+
+Virtual machines hosted under ESXi need two CPU options enabled.
+
+```
+Hardware virtualization:
+    Expose hardware assisted virtualization to the guest OS
+
+Performance counters:
+    Enable virtualized CPU performance counters
 ```
