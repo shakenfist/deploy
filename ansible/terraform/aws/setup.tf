@@ -57,9 +57,9 @@ resource "aws_security_group" "sf_allow_outbound" {
   }
 }
 
-resource "aws_security_group" "sf_allow_ssh" {
-  name        = "sf_allow_ssh"
-  description = "Allow SSH inbound traffic"
+resource "aws_security_group" "sf_allow_user" {
+  name        = "sf_allow_user"
+  description = "Allow inbound user traffic"
   vpc_id      = data.aws_vpc.sf_vpc.id
 
   ingress {
@@ -70,14 +70,30 @@ resource "aws_security_group" "sf_allow_ssh" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "SF API"
+    from_port   = 13000
+    to_port     = 13000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   tags = {
-    Name = "sf_allow_ssh"
+    Name = "sf_allow_user"
   }
 }
 
-resource "aws_security_group" "sf_allow_syslog" {
-  name        = "sf_allow_syslog"
-  description = "Allow syslog inbound traffic"
+resource "aws_security_group" "sf_allow_cluster" {
+  name        = "sf_allow_cluster"
+  description = "Allow SF cluster traffic"
   vpc_id      = data.aws_vpc.sf_vpc.id
 
   ingress {
@@ -96,52 +112,6 @@ resource "aws_security_group" "sf_allow_syslog" {
     cidr_blocks = [data.aws_vpc.sf_vpc.cidr_block]
   }
 
-  tags = {
-    Name = "sf_allow_syslog"
-  }
-}
-
-resource "aws_security_group" "sf_allow_api" {
-  name        = "sf_allow_api"
-  description = "Allow SF API inbound traffic"
-  vpc_id      = data.aws_vpc.sf_vpc.id
-
-  ingress {
-    description = "SF API"
-    from_port   = 13000
-    to_port     = 13000
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "sf_allow_api"
-  }
-}
-
-resource "aws_security_group" "sf_allow_http" {
-  name        = "sf_allow_http"
-  description = "Allow HTTP inbound traffic"
-  vpc_id      = data.aws_vpc.sf_vpc.id
-
-  ingress {
-    description = "HTTP"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-  }
-
-  tags = {
-    Name = "sf_allow_http"
-  }
-}
-
-resource "aws_security_group" "sf_allow_vxlan" {
-  name        = "sf_allow_vxlan"
-  description = "Allow VXLAN traffic"
-  vpc_id      = data.aws_vpc.sf_vpc.id
-
   ingress {
     description = "VXLAN"
     from_port   = 8472
@@ -157,16 +127,6 @@ resource "aws_security_group" "sf_allow_vxlan" {
     protocol    = "udp"
     cidr_blocks = ["0.0.0.0/0"]
   }
-
-  tags = {
-    Name = "sf_allow_vxlan"
-  }
-}
-
-resource "aws_security_group" "sf_allow_etcd" {
-  name        = "sf_allow_etcd"
-  description = "Allow etcd traffic"
-  vpc_id      = data.aws_vpc.sf_vpc.id
 
   ingress {
     description = "etcd clients"
@@ -185,7 +145,7 @@ resource "aws_security_group" "sf_allow_etcd" {
   }
 
   tags = {
-    Name = "sf_allow_etcd"
+    Name = "sf_allow_cluster"
   }
 }
 
@@ -201,13 +161,9 @@ resource "aws_instance" "sf_1" {
     Name = "sf-1"
   }
   vpc_security_group_ids = [
-    aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_vxlan.id,
     aws_security_group.sf_allow_outbound.id,
-    aws_security_group.sf_allow_http.id,
-    aws_security_group.sf_allow_syslog.id,
-    aws_security_group.sf_allow_etcd.id
+    aws_security_group.sf_allow_user.id,
+    aws_security_group.sf_allow_cluster.id
   ]
 }
 
@@ -223,12 +179,9 @@ resource "aws_instance" "sf_2" {
     Name = "sf-2"
   }
   vpc_security_group_ids = [
-    aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_vxlan.id,
     aws_security_group.sf_allow_outbound.id,
-    aws_security_group.sf_allow_http.id,
-    aws_security_group.sf_allow_etcd.id
+    aws_security_group.sf_allow_user.id,
+    aws_security_group.sf_allow_cluster.id
   ]
 }
 
@@ -244,12 +197,9 @@ resource "aws_instance" "sf_3" {
     Name = "sf-3"
   }
   vpc_security_group_ids = [
-    aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_vxlan.id,
     aws_security_group.sf_allow_outbound.id,
-    aws_security_group.sf_allow_http.id,
-    aws_security_group.sf_allow_etcd.id
+    aws_security_group.sf_allow_user.id,
+    aws_security_group.sf_allow_cluster.id
   ]
 }
 
