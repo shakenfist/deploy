@@ -163,6 +163,32 @@ resource "aws_security_group" "sf_allow_vxlan" {
   }
 }
 
+resource "aws_security_group" "sf_allow_etcd" {
+  name        = "sf_allow_etcd"
+  description = "Allow etcd traffic"
+  vpc_id      = data.aws_vpc.sf_vpc.id
+
+  ingress {
+    description = "etcd clients"
+    from_port   = 2379
+    to_port     = 2379
+    protocol    = "tcp"
+    cidr_blocks = [data.aws_vpc.sf_vpc.cidr_block]
+  }
+
+  ingress {
+    description = "etcd peers"
+    from_port   = 2380
+    to_port     = 2380
+    protocol    = "tcp"
+    cidr_blocks = [data.aws_vpc.sf_vpc.cidr_block]
+  }
+
+  tags = {
+    Name = "sf_allow_etcd"
+  }
+}
+
 resource "aws_instance" "sf_1" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "c5d.metal"
@@ -180,7 +206,8 @@ resource "aws_instance" "sf_1" {
     aws_security_group.sf_allow_vxlan.id,
     aws_security_group.sf_allow_outbound.id,
     aws_security_group.sf_allow_http.id,
-    aws_security_group.sf_allow_syslog.id
+    aws_security_group.sf_allow_syslog.id,
+    aws_security_group.sf_allow_etcd.id
   ]
 }
 
@@ -200,7 +227,8 @@ resource "aws_instance" "sf_2" {
     aws_security_group.sf_allow_ssh.id,
     aws_security_group.sf_allow_vxlan.id,
     aws_security_group.sf_allow_outbound.id,
-    aws_security_group.sf_allow_http.id
+    aws_security_group.sf_allow_http.id,
+    aws_security_group.sf_allow_etcd.id
   ]
 }
 
@@ -220,7 +248,8 @@ resource "aws_instance" "sf_3" {
     aws_security_group.sf_allow_ssh.id,
     aws_security_group.sf_allow_vxlan.id,
     aws_security_group.sf_allow_outbound.id,
-    aws_security_group.sf_allow_http.id
+    aws_security_group.sf_allow_http.id,
+    aws_security_group.sf_allow_etcd.id
   ]
 }
 
