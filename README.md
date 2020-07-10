@@ -44,9 +44,9 @@ ansible-galaxy install andrewrothstein.etcd-cluster
 ansible-playbook -i ansible/hosts-gcp $VARIABLES_AS_ABOVE ansible/deploy.yml
 ```
 
-### VMWare ESXi (Recommended for testing only)
+### VMWare ESXi
 
-The "metal" installation option can used to create a test cluster.
+The "metal" installation option can be used to create a test cluster.
 
 Virtual machines hosted under ESXi need two CPU options enabled.
 
