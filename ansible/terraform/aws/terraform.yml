@@ -3,6 +3,11 @@
     project_path: "{{ansible_root}}/terraform/aws"
     state: present
     force_init: true
+    variables:
+      vpc_id: "{{vpc_id}}"
+      region: "{{region}}"
+      availability_zone: "{{availability_zone}}"
+      ssh_key_name: "{{ssh_key_name}}"
   register: terraform_out
 
 - name: Add sf-1 to ansible
@@ -10,7 +15,7 @@
     hostname: sf-1
     ansible_ssh_host: "{{terraform_out.outputs.sf_1_external.value}}"
     ansible_user: "ubuntu"
-    ansible_ssh_private_key_file: "{{ssh_key}}"
+    ansible_ssh_private_key_file: "{{ssh_key_name}}"
     groups: hypervisors, db, etcd_master
 
 - name: Add sf-1 node_ip
@@ -24,7 +29,7 @@
     hostname: sf-2
     ansible_ssh_host: "{{terraform_out.outputs.sf_2_external.value}}"
     ansible_user: "ubuntu"
-    ansible_ssh_private_key_file: "{{ssh_key}}"
+    ansible_ssh_private_key_file: "{{ssh_key_name}}"
     groups: hypervisors, etcd_master
 
 - name: Add sf-2 node_ip
@@ -38,7 +43,7 @@
     hostname: sf-3
     ansible_ssh_host: "{{terraform_out.outputs.sf_3_external.value}}"
     ansible_user: "ubuntu"
-    ansible_ssh_private_key_file: "{{ssh_key}}"
+    ansible_ssh_private_key_file: "{{ssh_key_name}}"
     groups: hypervisors, etcd_master
 
 - name: Add sf-3 node_ip

@@ -4,10 +4,21 @@ provider "aws" {
   version = "~> 2.27"
 }
 
-variable "vpc_id" {}
-variable "region" {}
-variable "availability_zone" {}
-variable "keypair" {}
+variable "vpc_id" {
+  description = "The AWS VPC id"
+}
+
+variable "region" {
+  description = "The AWS region (e.g. us-east-1)"
+}
+
+variable "availability_zone" {
+  description = "The AWS availability zone in the region (e.g. us-east-1f)"
+}
+
+variable "ssh_key_name" {
+  description = "The name of an AWS ssh keypair in that region"
+}
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -94,7 +105,7 @@ resource "aws_security_group" "sf_allow_vxlan" {
 resource "aws_instance" "sf_1" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "c5d.metal"
-  key_name      = var.keypair
+  key_name      = var.ssh_key_name
   root_block_device {
     delete_on_termination = true
     volume_size           = 20
@@ -112,7 +123,7 @@ resource "aws_instance" "sf_1" {
 resource "aws_instance" "sf_2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "c5d.metal"
-  key_name      = var.keypair
+  key_name      = var.ssh_key_name
   root_block_device {
     delete_on_termination = true
     volume_size           = 20
@@ -130,7 +141,7 @@ resource "aws_instance" "sf_2" {
 resource "aws_instance" "sf_3" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "c5d.metal"
-  key_name      = var.keypair
+  key_name      = var.ssh_key_name
   root_block_device {
     delete_on_termination = true
     volume_size           = 20
