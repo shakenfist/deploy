@@ -40,6 +40,23 @@ data "aws_vpc" "sf_vpc" {
   id = var.vpc_id
 }
 
+resource "aws_security_group" "sf_allow_outbound" {
+  name        = "sf_allow_outbound"
+  description = "Allow all outbound traffic"
+  vpc_id      = data.aws_vpc.sf_vpc.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sf_allow_outbound"
+  }
+}
+
 resource "aws_security_group" "sf_allow_ssh" {
   name        = "sf_allow_ssh"
   description = "Allow SSH inbound traffic"
@@ -58,6 +75,32 @@ resource "aws_security_group" "sf_allow_ssh" {
   }
 }
 
+resource "aws_security_group" "sf_allow_syslog" {
+  name        = "sf_allow_syslog"
+  description = "Allow syslog inbound traffic"
+  vpc_id      = data.aws_vpc.sf_vpc.id
+
+  ingress {
+    description = "TCP syslog"
+    from_port   = 514
+    to_port     = 514
+    protocol    = "tcp"
+    cidr_blocks = [data.aws_vpc.sf_vpc.cidr_block]
+  }
+
+  ingress {
+    description = "UDP syslog"
+    from_port   = 514
+    to_port     = 514
+    protocol    = "udp"
+    cidr_blocks = [data.aws_vpc.sf_vpc.cidr_block]
+  }
+
+  tags = {
+    Name = "sf_allow_syslog"
+  }
+}
+
 resource "aws_security_group" "sf_allow_api" {
   name        = "sf_allow_api"
   description = "Allow SF API inbound traffic"
@@ -73,6 +116,24 @@ resource "aws_security_group" "sf_allow_api" {
 
   tags = {
     Name = "sf_allow_api"
+  }
+}
+
+resource "aws_security_group" "sf_allow_http" {
+  name        = "sf_allow_http"
+  description = "Allow HTTP inbound traffic"
+  vpc_id      = data.aws_vpc.sf_vpc.id
+
+  ingress {
+    description = "HTTP"
+    from_port   = 80
+    to_port     = 80
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sf_allow_http"
   }
 }
 
@@ -116,7 +177,10 @@ resource "aws_instance" "sf_1" {
   vpc_security_group_ids = [
     aws_security_group.sf_allow_ssh.id,
     aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_vxlan.id
+    aws_security_group.sf_allow_vxlan.id,
+    aws_security_group.sf_allow_outbound.id,
+    aws_security_group.sf_allow_http.id,
+    aws_security_group.sf_allow_syslog.id
   ]
 }
 
@@ -134,7 +198,9 @@ resource "aws_instance" "sf_2" {
   vpc_security_group_ids = [
     aws_security_group.sf_allow_ssh.id,
     aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_vxlan.id
+    aws_security_group.sf_allow_vxlan.id,
+    aws_security_group.sf_allow_outbound.id,
+    aws_security_group.sf_allow_http.id
   ]
 }
 
@@ -152,7 +218,9 @@ resource "aws_instance" "sf_3" {
   vpc_security_group_ids = [
     aws_security_group.sf_allow_ssh.id,
     aws_security_group.sf_allow_ssh.id,
-    aws_security_group.sf_allow_vxlan.id
+    aws_security_group.sf_allow_vxlan.id,
+    aws_security_group.sf_allow_outbound.id,
+    aws_security_group.sf_allow_http.id
   ]
 }
 

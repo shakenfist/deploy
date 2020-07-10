@@ -1,5 +1,11 @@
 - name: Setup /srv as a raid device on NVME disks
   shell: |
+    if [ `grep -c md0 /proc/mdstat` -gt 0 ]
+    then
+      echo "Already setup"
+      exit 0
+    fi
+
     available_nvme=""
     for nvme in /dev/nvme[0-9]
     do
