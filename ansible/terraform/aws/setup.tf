@@ -1,13 +1,13 @@
 provider "aws" {
   profile = "default"
-  region  = "ap-southeast-2"
+  region  = var.region
   version = "~> 2.27"
 }
 
-# Unused, here to keep my terrible script happy
-variable "ssh_key" {
-  description = "The ssh private key file to use"
-}
+variable "vpc_id" {}
+variable "region" {}
+variable "availability_zone" {}
+variable "keypair" {}
 
 data "aws_ami" "ubuntu" {
   most_recent = true
@@ -25,10 +25,76 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+data "aws_vpc" "sf_vpc" {
+  id = var.vpc_id
+}
+
+resource "aws_security_group" "sf_allow_ssh" {
+  name        = "sf_allow_ssh"
+  description = "Allow SSH inbound traffic"
+  vpc_id      = data.aws_vpc.sf_vpc.id
+
+  ingress {
+    description = "SSH"
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sf_allow_ssh"
+  }
+}
+
+resource "aws_security_group" "sf_allow_api" {
+  name        = "sf_allow_api"
+  description = "Allow SF API inbound traffic"
+  vpc_id      = data.aws_vpc.sf_vpc.id
+
+  ingress {
+    description = "SF API"
+    from_port   = 13000
+    to_port     = 13000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sf_allow_api"
+  }
+}
+
+resource "aws_security_group" "sf_allow_vxlan" {
+  name        = "sf_allow_vxlan"
+  description = "Allow VXLAN traffic"
+  vpc_id      = data.aws_vpc.sf_vpc.id
+
+  ingress {
+    description = "VXLAN"
+    from_port   = 8472
+    to_port     = 8472
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    description = "VXLAN"
+    from_port   = 4789
+    to_port     = 4789
+    protocol    = "udp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  tags = {
+    Name = "sf_allow_vxlan"
+  }
+}
+
 resource "aws_instance" "sf_1" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "c5d.metal"
-  key_name      = "mikal-aws"
+  key_name      = var.keypair
   root_block_device {
     delete_on_termination = true
     volume_size           = 20
@@ -36,13 +102,17 @@ resource "aws_instance" "sf_1" {
   tags = {
     Name = "sf-1"
   }
-  vpc_security_group_ids = ["sg-0ff088c6b3e980ffd", "sg-0008a21805a524651"]
+  vpc_security_group_ids = [
+    aws_security_group.sf_allow_ssh.id,
+    aws_security_group.sf_allow_ssh.id,
+    aws_security_group.sf_allow_vxlan.id
+  ]
 }
 
 resource "aws_instance" "sf_2" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "c5d.metal"
-  key_name      = "mikal-aws"
+  key_name      = var.keypair
   root_block_device {
     delete_on_termination = true
     volume_size           = 20
@@ -50,13 +120,17 @@ resource "aws_instance" "sf_2" {
   tags = {
     Name = "sf-2"
   }
-  vpc_security_group_ids = ["sg-0ff088c6b3e980ffd", "sg-0ae4a0742f580e222", "sg-0f4481fe67c40d267"]
+  vpc_security_group_ids = [
+    aws_security_group.sf_allow_ssh.id,
+    aws_security_group.sf_allow_ssh.id,
+    aws_security_group.sf_allow_vxlan.id
+  ]
 }
 
 resource "aws_instance" "sf_3" {
   ami           = data.aws_ami.ubuntu.id
   instance_type = "c5d.metal"
-  key_name      = "mikal-aws"
+  key_name      = var.keypair
   root_block_device {
     delete_on_termination = true
     volume_size           = 20
@@ -64,7 +138,11 @@ resource "aws_instance" "sf_3" {
   tags = {
     Name = "sf-3"
   }
-  vpc_security_group_ids = ["sg-0ff088c6b3e980ffd", "sg-0ae4a0742f580e222", "sg-0f4481fe67c40d267"]
+  vpc_security_group_ids = [
+    aws_security_group.sf_allow_ssh.id,
+    aws_security_group.sf_allow_ssh.id,
+    aws_security_group.sf_allow_vxlan.id
+  ]
 }
 
 output "sf_1_external" {

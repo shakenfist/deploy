@@ -3,8 +3,6 @@
     project_path: "{{ansible_root}}/terraform/aws"
     state: present
     force_init: true
-    variables:
-      ssh_key: "{{ssh_key}}"
   register: terraform_out
 
 - name: Add sf-1 to ansible
