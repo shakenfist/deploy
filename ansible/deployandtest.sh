@@ -19,21 +19,21 @@ if [ "$CLOUD" == "aws" ] || [ "$CLOUD" == "aws-single-node" ]
 then
   if [ -z "$AWS_REGION" ]
   then
-    echo ===== Must specify AWS region project in \$AWS_REGION
+    echo ===== Must specify AWS region in \$AWS_REGION
     exit 1
   fi
   VARIABLES="$VARIABLES region=$AWS_REGION"
 
   if [ -z "$AWS_AVAILABILITY_ZONE" ]
   then
-    echo ===== Must specify AWS region project in \$AWS_AVAILABILITY_ZONE
+    echo ===== Must specify AWS availability zone in \$AWS_AVAILABILITY_ZONE
     exit 1
   fi
   VARIABLES="$VARIABLES availability_zone=$AWS_REGION"
 
   if [ -z "$AWS_VPC_ID" ]
   then
-    echo ===== Must specify AWS region project in \$AWS_VPC_ID
+    echo ===== Must specify AWS VPC ID in \$AWS_VPC_ID
     exit 1
   fi
   VARIABLES="$VARIABLES vpc_id=$AWS_VPC_ID"
