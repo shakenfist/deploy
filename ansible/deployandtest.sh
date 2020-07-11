@@ -7,18 +7,52 @@
 #
 
 #### Required settings
-CLOUD=$1
+CLOUD=${1:-$CLOUD}
 if [ -z "$CLOUD" ]
 then
-  echo ==== CLOUD must be specified: aws, gcp, metal, openstack
+  echo ==== CLOUD must be specified: aws, aws-single-node, gcp, metal, openstack
+  echo ==== eg.  ./deployandtest/sh gcp
   exit 1
 fi
 
-if [ "$CLOUD" == "gcp" ] && [ -z "$GCP_PROJECT" ]
+if [ "$CLOUD" == "aws" ] || [ "$CLOUD" == "aws-single-node" ]
 then
-  echo ===== Must specify GCP project in \$GCP_PROJECT
-  exit 1
-else
+  if [ -z "$AWS_REGION" ]
+  then
+    echo ===== Must specify AWS region project in \$AWS_REGION
+    exit 1
+  fi
+  VARIABLES="$VARIABLES region=$AWS_REGION"
+
+  if [ -z "$AWS_AVAILABILITY_ZONE" ]
+  then
+    echo ===== Must specify AWS region project in \$AWS_AVAILABILITY_ZONE
+    exit 1
+  fi
+  VARIABLES="$VARIABLES availability_zone=$AWS_REGION"
+
+  if [ -z "$AWS_VPC_ID" ]
+  then
+    echo ===== Must specify AWS region project in \$AWS_VPC_ID
+    exit 1
+  fi
+  VARIABLES="$VARIABLES vpc_id=$AWS_VPC_ID"
+
+  if [ -z "$AWS_SSH_KEY_NAME" ]
+  then
+    echo ===== Must specify AWS Instance SSH key name in \$AWS_SSH_KEY_NAME
+    exit 1
+  fi
+  VARIABLES="$VARIABLES ssh_key_name=$AWS_SSH_KEY_NAME"
+fi
+
+if [ "$CLOUD" == "gcp" ]
+then
+  if [ -z "$GCP_PROJECT" ]
+  then
+    echo ===== Must specify GCP project in \$GCP_PROJECT
+    exit 1
+  fi
   VARIABLES="$VARIABLES project=$GCP_PROJECT"
 fi
 
