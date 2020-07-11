@@ -15,6 +15,7 @@ then
   exit 1
 fi
 
+#### AWS
 if [ "$CLOUD" == "aws" ] || [ "$CLOUD" == "aws-single-node" ]
 then
   if [ -z "$AWS_REGION" ]
@@ -46,6 +47,7 @@ then
   VARIABLES="$VARIABLES ssh_key_name=$AWS_SSH_KEY_NAME"
 fi
 
+#### Google Cloud
 if [ "$CLOUD" == "gcp" ]
 then
   if [ -z "$GCP_PROJECT" ]
@@ -55,6 +57,32 @@ then
   fi
   VARIABLES="$VARIABLES project=$GCP_PROJECT"
 fi
+
+#### Openstack
+if [ "$CLOUD" == "openstack" ]
+then
+  if [ -z "$OS_SSH_KEY_NAME" ]
+  then
+    echo ===== Must specify Openstack SSH key name in \$OS_SSH_KEY_NAME
+    exit 1
+  fi
+  VARIABLES="$VARIABLES ssh_key_name=$OS_SSH_KEY_NAME"
+
+  if [ -z "$OS_FLAVOR_NAME" ]
+  then
+    echo ===== Must specify Openstack instance flavor name in \$OS_FLAVOR_NAME
+    exit 1
+  fi
+  VARIABLES="$VARIABLES os_flavor=$OS_FLAVOR_NAME"
+
+  if [ -z "$OS_EXTERNAL_NET_NAME" ]
+  then
+    echo ===== Must specify Openstack External network name in \$OS_EXTERNAL_NET_NAME
+    exit 1
+  fi
+  VARIABLES="$VARIABLES os_external_net_name=$OS_EXTERNAL_NET_NAME"
+fi
+
 
 #### Default settings
 BOOTDELAY="${BOOTDELAY:-2}"

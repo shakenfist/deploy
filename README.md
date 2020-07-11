@@ -12,6 +12,14 @@ Installation
 
 Build an acceptable deployment, noting that only Ubuntu is supported.
 
+## Common first steps
+
+```bash
+git clone https://github.com/shakenfist/deploy
+cd deploy/ansible
+ansible-galaxy install andrewrothstein.etcd-cluster
+```
+
 ## Google Cloud
 
 On Google Cloud, you need to enable nested virt first:
@@ -43,6 +51,20 @@ cd deploy/ansible
 ansible-galaxy install andrewrothstein.etcd-cluster
 ansible-playbook -i ansible/hosts-gcp $VARIABLES_AS_ABOVE ansible/deploy.yml
 ```
+
+## Openstack Deployment
+
+Configure deployment parameters and deploy
+
+``` bash
+cd ansible
+export OS_SSH_KEY_NAME="and-arwen"
+export OS_FLAVOR_NAME="2C-4GB-50GB"
+export OS_EXTERNAL_NET_NAME="ext-net"
+./deployandtest.sh
+```
+
+## Bare Metal Deployment
 
 ### VMWare ESXi
 
