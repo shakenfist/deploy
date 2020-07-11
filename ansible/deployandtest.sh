@@ -8,12 +8,6 @@
 
 #### Required settings
 CLOUD=${1:-$CLOUD}
-if [ -z "$CLOUD" ]
-then
-  echo ==== CLOUD must be specified: aws, aws-single-node, gcp, metal, openstack
-  echo ==== eg.  ./deployandtest/sh gcp
-  exit 1
-fi
 
 #### AWS
 if [ "$CLOUD" == "aws" ] || [ "$CLOUD" == "aws-single-node" ]
@@ -83,6 +77,38 @@ then
   VARIABLES="$VARIABLES os_external_net_name=$OS_EXTERNAL_NET_NAME"
 fi
 
+#### Metal
+if [ "$CLOUD" == "metal" ]
+then
+  if [ -z "$METAL_IP_SF1" ]
+  then
+    echo ===== Must specify the Node 1 machine IP in \$METAL_IP_SF1
+    exit 1
+  fi
+  VARIABLES="$VARIABLES metal_ip_sf1=$METAL_IP_SF1"
+
+  if [ -z "$METAL_IP_SF2" ]
+  then
+    echo ===== Must specify the Node 2 machine IP in \$METAL_IP_SF2
+    exit 1
+  fi
+  VARIABLES="$VARIABLES metal_ip_sf2=$METAL_IP_SF2"
+
+  if [ -z "$METAL_IP_SF3" ]
+  then
+    echo ===== Must specify the Node 3 machine IP in \$METAL_IP_SF3
+    exit 1
+  fi
+  VARIABLES="$VARIABLES metal_ip_sf3=$METAL_IP_SF3"
+fi
+
+
+if [ -z "$VARIABLES" ]
+then
+  echo ==== CLOUD must be specified: aws, aws-single-node, gcp, metal, openstack
+  echo ==== eg.  ./deployandtest/sh gcp
+  exit 1
+fi
 
 #### Default settings
 BOOTDELAY="${BOOTDELAY:-2}"

@@ -15,6 +15,7 @@ Build an acceptable deployment, noting that only Ubuntu is supported.
 ## Common first steps
 
 ```bash
+sudo apt-get install ansible tox pwgen
 git clone https://github.com/shakenfist/deploy
 cd deploy/ansible
 ansible-galaxy install andrewrothstein.etcd-cluster
@@ -33,30 +34,21 @@ gcloud compute images create sf-image \
   --licenses "https://compute.googleapis.com/compute/v1/projects/vm-options/global/licenses/enable-vmx"
 ```
 
-Update the contents of ansible/vars with locally valid values. Its a YAML file if that helps.
-
-The ansible takes varying variables depending on your undercloud provider. Here's a handy dandy table:
-
-| Cloud                 | Variables                      | Example               |
-|-----------------------|--------------------------------|-----------------------|
-| Google Compute Engine | Your google compute project ID | -var project=foo-1234 |
-|-----------------------|--------------------------------|-----------------------|
-
-Now create your database and hypervisor nodes (where foo-1234 is my Google Compute project):
+Configure deployment parameters and deploy
 
 ```bash
-sudo apt-get install ansible tox pwgen
-git clone https://github.com/shakenfist/deploy
-cd deploy/ansible
-ansible-galaxy install andrewrothstein.etcd-cluster
-ansible-playbook -i ansible/hosts-gcp $VARIABLES_AS_ABOVE ansible/deploy.yml
+cd ansible
+export METAL_IP_SF1="192.168.72.240"
+export METAL_IP_SF2="192.168.72.230"
+export METAL_IP_SF3="192.168.72.242"
+./deployandtest.sh
 ```
 
-## Openstack Deployment
+## OpenStack Deployment
 
 Configure deployment parameters and deploy
 
-``` bash
+```bash
 cd ansible
 export OS_SSH_KEY_NAME="and-arwen"
 export OS_FLAVOR_NAME="2C-4GB-50GB"
@@ -66,9 +58,19 @@ export OS_EXTERNAL_NET_NAME="ext-net"
 
 ## Bare Metal Deployment
 
+Configure deployment parameters and deploy
+
+```bash
+cd ansible
+export METAL_IP_SF1="192.168.72.240"
+export METAL_IP_SF2="192.168.72.230"
+export METAL_IP_SF3="192.168.72.242"
+./deployandtest.sh
+```
+
 ### VMWare ESXi
 
-The "metal" installation option can be used to create a test cluster.
+The "metal" installation option can be used to create a test cluster on VMWare ESXi hypervisors.
 
 Virtual machines hosted under ESXi need two CPU options enabled.
 
