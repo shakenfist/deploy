@@ -1,9 +1,9 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 #
-# ./deployandtest.sh [aws|gcp|metal|openstack]
+# ./deployandtest.sh [aws|aws-single-node|gcp|metal|openstack]
 #
 #
-# Note: Tests can skipped by setting $SKIP_SF_TESTS
+# Note: Tests can be skipped by setting $SKIP_SF_TESTS
 #
 
 #### Required settings
@@ -105,10 +105,17 @@ fi
 
 if [ -z "$VARIABLES" ]
 then
-  echo ==== CLOUD must be specified: aws, aws-single-node, gcp, metal, openstack
+{
+  echo ====
+  echo ==== CLOUD should be specified: aws, aws-single-node, gcp, metal, openstack
   echo ==== eg.  ./deployandtest/sh gcp
-  exit 1
+  echo ====
+  echo ==== Continuing, because you might know what you are doing...
+  echo
+} 2> /dev/null
 fi
+
+set -x
 
 #### Default settings
 BOOTDELAY="${BOOTDELAY:-2}"
