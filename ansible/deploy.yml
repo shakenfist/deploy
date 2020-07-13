@@ -160,6 +160,13 @@
       args:
         chdir: /srv/shakenfist/
 
+    - name: Install shakenfist bash autocompletion
+      lineinfile:
+        path: /root/.bashrc
+        create: yes
+        regexp: 'eval "\$\(_SF_CLIENT_COMPLETE='
+        line: 'eval "$(_SF_CLIENT_COMPLETE=source_bash sf-client)"'
+
     - name: Create config directory
       file:
         path: /etc/sf
