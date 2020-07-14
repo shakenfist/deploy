@@ -1,39 +1,34 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 #
-# ./deployandtest.sh [aws|gcp|metal|openstack]
+# ./deployandtest.sh [aws|aws-single-node|gcp|metal|openstack]
 #
 #
-# Note: Tests can skipped by setting $SKIP_SF_TESTS
+# Note: Tests can be skipped by setting $SKIP_SF_TESTS
 #
 
 #### Required settings
 CLOUD=${1:-$CLOUD}
-if [ -z "$CLOUD" ]
-then
-  echo ==== CLOUD must be specified: aws, aws-single-node, gcp, metal, openstack
-  echo ==== eg.  ./deployandtest/sh gcp
-  exit 1
-fi
 
+#### AWS
 if [ "$CLOUD" == "aws" ] || [ "$CLOUD" == "aws-single-node" ]
 then
   if [ -z "$AWS_REGION" ]
   then
-    echo ===== Must specify AWS region project in \$AWS_REGION
+    echo ===== Must specify AWS region in \$AWS_REGION
     exit 1
   fi
   VARIABLES="$VARIABLES region=$AWS_REGION"
 
   if [ -z "$AWS_AVAILABILITY_ZONE" ]
   then
-    echo ===== Must specify AWS region project in \$AWS_AVAILABILITY_ZONE
+    echo ===== Must specify AWS availability zone in \$AWS_AVAILABILITY_ZONE
     exit 1
   fi
   VARIABLES="$VARIABLES availability_zone=$AWS_REGION"
 
   if [ -z "$AWS_VPC_ID" ]
   then
-    echo ===== Must specify AWS region project in \$AWS_VPC_ID
+    echo ===== Must specify AWS VPC ID in \$AWS_VPC_ID
     exit 1
   fi
   VARIABLES="$VARIABLES vpc_id=$AWS_VPC_ID"
@@ -46,6 +41,7 @@ then
   VARIABLES="$VARIABLES ssh_key_name=$AWS_SSH_KEY_NAME"
 fi
 
+#### Google Cloud
 if [ "$CLOUD" == "gcp" ]
 then
   if [ -z "$GCP_PROJECT" ]
@@ -55,6 +51,71 @@ then
   fi
   VARIABLES="$VARIABLES project=$GCP_PROJECT"
 fi
+
+#### Openstack
+if [ "$CLOUD" == "openstack" ]
+then
+  if [ -z "$OS_SSH_KEY_NAME" ]
+  then
+    echo ===== Must specify Openstack SSH key name in \$OS_SSH_KEY_NAME
+    exit 1
+  fi
+  VARIABLES="$VARIABLES ssh_key_name=$OS_SSH_KEY_NAME"
+
+  if [ -z "$OS_FLAVOR_NAME" ]
+  then
+    echo ===== Must specify Openstack instance flavor name in \$OS_FLAVOR_NAME
+    exit 1
+  fi
+  VARIABLES="$VARIABLES os_flavor=$OS_FLAVOR_NAME"
+
+  if [ -z "$OS_EXTERNAL_NET_NAME" ]
+  then
+    echo ===== Must specify Openstack External network name in \$OS_EXTERNAL_NET_NAME
+    exit 1
+  fi
+  VARIABLES="$VARIABLES os_external_net_name=$OS_EXTERNAL_NET_NAME"
+fi
+
+#### Metal
+if [ "$CLOUD" == "metal" ]
+then
+  if [ -z "$METAL_IP_SF1" ]
+  then
+    echo ===== Must specify the Node 1 machine IP in \$METAL_IP_SF1
+    exit 1
+  fi
+  VARIABLES="$VARIABLES metal_ip_sf1=$METAL_IP_SF1"
+
+  if [ -z "$METAL_IP_SF2" ]
+  then
+    echo ===== Must specify the Node 2 machine IP in \$METAL_IP_SF2
+    exit 1
+  fi
+  VARIABLES="$VARIABLES metal_ip_sf2=$METAL_IP_SF2"
+
+  if [ -z "$METAL_IP_SF3" ]
+  then
+    echo ===== Must specify the Node 3 machine IP in \$METAL_IP_SF3
+    exit 1
+  fi
+  VARIABLES="$VARIABLES metal_ip_sf3=$METAL_IP_SF3"
+fi
+
+
+if [ -z "$VARIABLES" ]
+then
+{
+  echo ====
+  echo ==== CLOUD should be specified: aws, aws-single-node, gcp, metal, openstack
+  echo ==== eg.  ./deployandtest/sh gcp
+  echo ====
+  echo ==== Continuing, because you might know what you are doing...
+  echo
+} 2> /dev/null
+fi
+
+set -x
 
 #### Default settings
 BOOTDELAY="${BOOTDELAY:-2}"
