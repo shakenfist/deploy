@@ -17,7 +17,10 @@ Build an acceptable deployment, noting that only Ubuntu is supported.
 ```bash
 sudo apt-get install ansible tox pwgen
 git clone https://github.com/shakenfist/deploy
-cd deploy/ansible
+cd deploy
+git submodule init
+git submodule update
+cd ansible
 ansible-galaxy install andrewrothstein.etcd-cluster
 ```
 
