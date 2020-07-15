@@ -102,6 +102,12 @@ then
   VARIABLES="$VARIABLES metal_ip_sf3=$METAL_IP_SF3"
 fi
 
+#### Release selection, git or a version from pypi
+if [ -z "$RELEASE" ]
+then
+  RELEASE="0.2"
+fi
+VARIABLES="$VARIABLES release=$RELEASE"
 
 if [ -z "$VARIABLES" ]
 then
