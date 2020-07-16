@@ -381,3 +381,14 @@
         enabled: yes
         state: restarted
         daemon_reload: yes
+
+- hosts: db
+  any_errors_fatal: true
+  become: yes
+  become_method: sudo
+  gather_facts: no
+  connection: ssh
+
+  tasks:
+    - name: Run any upgrade steps
+      shell: sf-upgrade
