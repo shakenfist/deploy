@@ -105,7 +105,7 @@ fi
 #### Release selection, git or a version from pypi
 if [ -z "$RELEASE" ]
 then
-  RELEASE="0.2"
+  RELEASE="0.2.1"
 fi
 VARIABLES="$VARIABLES release=$RELEASE"
 
