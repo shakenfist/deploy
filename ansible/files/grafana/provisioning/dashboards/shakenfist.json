@@ -15,6 +15,7 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
+    "id": 2,
     "links": [],
     "panels": [
         {
@@ -372,7 +373,6 @@
             },
             "yaxes": [
                 {
-                    "$$hashKey": "object:519",
                     "format": "short",
                     "label": null,
                     "logBase": 1,
@@ -381,7 +381,6 @@
                     "show": true
                 },
                 {
-                    "$$hashKey": "object:520",
                     "format": "short",
                     "label": null,
                     "logBase": 1,
@@ -485,7 +484,7 @@
             },
             "yaxes": [
                 {
-                    "format": "kbytes",
+                    "format": "decmbytes",
                     "label": null,
                     "logBase": 1,
                     "max": null,
@@ -596,7 +595,7 @@
             },
             "yaxes": [
                 {
-                    "format": "kbytes",
+                    "format": "decmbytes",
                     "label": null,
                     "logBase": 1,
                     "max": null,
@@ -784,7 +783,6 @@
             },
             "yaxes": [
                 {
-                    "$$hashKey": "object:519",
                     "format": "short",
                     "label": null,
                     "logBase": 1,
@@ -793,7 +791,6 @@
                     "show": true
                 },
                 {
-                    "$$hashKey": "object:520",
                     "format": "short",
                     "label": null,
                     "logBase": 1,
@@ -1162,7 +1159,6 @@
             },
             "yaxes": [
                 {
-                    "$$hashKey": "object:370",
                     "format": "bytes",
                     "label": null,
                     "logBase": 1,
@@ -1171,7 +1167,6 @@
                     "show": true
                 },
                 {
-                    "$$hashKey": "object:371",
                     "format": "short",
                     "label": null,
                     "logBase": 1,
@@ -1546,7 +1541,6 @@
             },
             "yaxes": [
                 {
-                    "$$hashKey": "object:419",
                     "format": "bps",
                     "label": null,
                     "logBase": 1,
@@ -1555,7 +1549,6 @@
                     "show": true
                 },
                 {
-                    "$$hashKey": "object:420",
                     "format": "short",
                     "label": null,
                     "logBase": 1,
@@ -1599,5 +1592,5 @@
     "timezone": "",
     "title": "Shaken Fist",
     "uid": "8EQRw7kMz",
-    "version": 1
+    "version": 2
 }
