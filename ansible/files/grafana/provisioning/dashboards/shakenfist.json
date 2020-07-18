@@ -26,7 +26,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -52,10 +53,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -120,7 +119,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -146,10 +146,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -214,7 +212,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -240,10 +239,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -308,7 +305,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -334,10 +332,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -402,23 +398,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {
-                        "align": null
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    }
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -444,11 +425,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
-            "pluginVersion": "7.0.0",
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -513,27 +491,12 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {
-                        "align": null
-                    },
-                    "mappings": [],
-                    "thresholds": {
-                        "mode": "absolute",
-                        "steps": [
-                            {
-                                "color": "green",
-                                "value": null
-                            },
-                            {
-                                "color": "red",
-                                "value": 80
-                            }
-                        ]
-                    }
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
-            "fill": 1,
+            "fill": 0,
             "fillGradient": 0,
             "gridPos": {
                 "h": 7,
@@ -553,17 +516,39 @@
                 "values": false
             },
             "lines": true,
-            "linewidth": 1,
+            "linewidth": 2,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
-            "pluginVersion": "7.0.0",
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
-            "seriesOverrides": [],
+            "seriesOverrides": [
+                {
+                    "alias": "10.2.1.11:13001 shared pages",
+                    "yaxis": 2
+                },
+                {
+                    "alias": "10.2.1.12:13001 shared pages",
+                    "yaxis": 2
+                },
+                {
+                    "alias": "10.2.1.13:13001 shared pages",
+                    "yaxis": 2
+                },
+                {
+                    "alias": "10.2.1.13:13001 sharing pages",
+                    "yaxis": 2
+                },
+                {
+                    "alias": "10.2.1.12:13001 sharing pages",
+                    "yaxis": 2
+                },
+                {
+                    "alias": "10.2.1.11:13001 sharing pages",
+                    "yaxis": 2
+                }
+            ],
             "spaceLength": 10,
             "stack": false,
             "steppedLine": false,
@@ -573,6 +558,18 @@
                     "interval": "",
                     "legendFormat": "{{instance}} available",
                     "refId": "B"
+                },
+                {
+                    "expr": "memory_available_libvirt",
+                    "interval": "",
+                    "legendFormat": "{{instance}} available libvirt",
+                    "refId": "A"
+                },
+                {
+                    "expr": "memory_ksm_pages_sharing",
+                    "interval": "",
+                    "legendFormat": "{{instance}} sharing pages",
+                    "refId": "C"
                 }
             ],
             "thresholds": [],
@@ -624,7 +621,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -650,10 +648,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -718,7 +714,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -744,10 +741,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -812,7 +807,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -838,10 +834,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -906,7 +900,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -932,10 +927,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1000,7 +993,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -1026,10 +1020,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1094,7 +1086,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -1120,10 +1113,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1188,7 +1179,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -1214,10 +1206,8 @@
             "lines": false,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1282,7 +1272,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -1308,10 +1299,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1376,7 +1365,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -1402,10 +1392,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1470,7 +1458,8 @@
             "datasource": null,
             "fieldConfig": {
                 "defaults": {
-                    "custom": {}
+                    "custom": {},
+                    "links": []
                 },
                 "overrides": []
             },
@@ -1496,10 +1485,8 @@
             "lines": true,
             "linewidth": 1,
             "nullPointMode": "null",
-            "options": {
-                "dataLinks": []
-            },
             "percentage": false,
+            "pluginVersion": "7.1.0",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1564,7 +1551,7 @@
         }
     ],
     "refresh": "10s",
-    "schemaVersion": 25,
+    "schemaVersion": 26,
     "style": "dark",
     "tags": [
         "shakenfist"
@@ -1592,5 +1579,5 @@
     "timezone": "",
     "title": "Shaken Fist",
     "uid": "8EQRw7kMz",
-    "version": 2
+    "version": 3
 }
