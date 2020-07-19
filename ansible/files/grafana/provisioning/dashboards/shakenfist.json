@@ -566,7 +566,7 @@
                     "refId": "A"
                 },
                 {
-                    "expr": "memory_ksm_pages_sharing",
+                    "expr": "memory_ksm_pages_sharing * 4096",
                     "interval": "",
                     "legendFormat": "{{instance}} sharing pages",
                     "refId": "C"
@@ -600,7 +600,7 @@
                     "show": true
                 },
                 {
-                    "format": "short",
+                    "format": "bytes",
                     "label": null,
                     "logBase": 1,
                     "max": null,
@@ -659,7 +659,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "memory_total_instance_actual_memory",
+                    "expr": "memory_total_instance_actual",
                     "interval": "",
                     "legendFormat": "{{instance}}",
                     "refId": "A"
@@ -1579,5 +1579,5 @@
     "timezone": "",
     "title": "Shaken Fist",
     "uid": "8EQRw7kMz",
-    "version": 3
+    "version": 4
 }
