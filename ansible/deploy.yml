@@ -120,6 +120,32 @@
     - name: Check that we can run KVM
       shell: kvm-ok
 
+    - name: Determine default interface
+      shell: ip route list default | head -1 | cut -f 5 -d " "
+      register: node_egress_nic_complex
+      when: node_egress_nic is not defined
+
+    - name: Extract node default interface
+      set_fact:
+        node_egress_nic: "{{node_egress_nic_complex.stdout}}"
+      when: node_egress_nic is not defined
+
+    - name: Determine default interface MTU
+      shell: ip link show eno1 | grep eno1 | sed -e 's/.*mtu //' -e 's/ .*//'
+      register: node_mtu_complex
+
+    - name: Extract default interface MTU
+      set_fact:
+        node_mtu: "{{node_mtu_complex.stdout}}"
+
+    - name: Log node MTU
+      debug:
+        msg: "Node MTU is {{node_mtu}}"
+
+    - name: Abort if default interface MTU is too low
+      shell: exit 1
+      when: node_mtu|int < 2000
+
     - name: Make /srv/shakenfist/
       file:
         path: /srv/shakenfist
@@ -189,16 +215,6 @@
         path: /etc/sf
         state: directory
         mode: "0755"
-
-    - name: Determine default interface
-      shell: ip route list default | head -1 | cut -f 5 -d " "
-      register: node_egress_nic_complex
-      when: node_egress_nic is not defined
-
-    - name: Extract node default interface
-      set_fact:
-        node_egress_nic: "{{node_egress_nic_complex.stdout}}"
-      when: node_egress_nic is not defined
 
     - name: Write sfrc file
       template:
