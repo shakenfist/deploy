@@ -391,6 +391,23 @@
         node_ip: "{{node_ip_complex.stdout}}"
       when: node_ip is not defined
 
+    - name: Configure KSM to be sensible on boot
+      copy:
+        content: |
+          w /sys/kernel/mm/ksm/run - - - - 1
+          w /sys/kernel/mm/ksm/pages_to_scan - - - - 1000000
+          w /sys/kernel/mm/ksm/merge_across_nodes - - - - 0
+        dest: /etc/tmpfiles.d/sf-ksm.conf
+        owner: root
+        mode: u=r,g=r,o=r
+
+    # merge_across_nodes requires a reboot, so is skipped below
+    - name: Configure KSM to be sensible now
+      shell: |
+        echo "1" > /sys/kernel/mm/ksm/run
+        echo "100000" > /sys/kernel/mm/ksm/pages_to_scan
+      ignore_errors: True
+
     - name: Write systemd unit
       template:
         src: files/sf.service
