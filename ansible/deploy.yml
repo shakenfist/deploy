@@ -200,6 +200,20 @@
         node_egress_nic: "{{node_egress_nic_complex.stdout}}"
       when: node_egress_nic is not defined
 
+    - name: Set system key from extra-vars
+      set_fact:
+        system_key: "{{admin_password}}"
+
+    - name: Use Hashicorp Vault for "system" namespace key (if enabled)
+      block:
+        - set_fact:
+            system_key: "{{lookup('hashivault', '{{vault_system_key_path}}', 'key')}}"
+          when: vault_system_key_path is defined
+
+      rescue:
+        - fail:
+            msg: "Ensure that you have installed ansible-modules-hashivault ie. pip install ansible-modules-hashivault"
+
     - name: Write sfrc file
       template:
         src: files/sfrc
@@ -334,20 +348,6 @@
         name: grafana-server
         enabled: yes
         state: restarted
-
-    - name: Set admin password from extra-vars
-      set_fact:
-        system_key: "{{admin_password}}"
-
-    - name: Use Hashicorp Vault for "system" namespace key (if enabled)
-      block:
-        - set_fact:
-            system_key: "{{lookup('hashivault', '{{vault_system_key_path}}', 'key')}}"
-          when: vault_system_key_path is defined
-
-      rescue:
-        - fail:
-            msg: "Ensure that you have installed ansible-modules-hashivault ie. pip install ansible-modules-hashivault"
 
     - name: Create an admin namespace called "system" with one key configured
       shell: sf-passwd deploy "{{system_key}}"

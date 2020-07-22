@@ -102,13 +102,7 @@ then
   VARIABLES="$VARIABLES metal_ip_sf3=$METAL_IP_SF3"
 fi
 
-#### Release selection, git or a version from pypi
-if [ -z "$RELEASE" ]
-then
-  RELEASE="0.2"
-fi
-VARIABLES="$VARIABLES release=$RELEASE"
-
+#### Check that a valid cloud was specified
 if [ -z "$VARIABLES" ]
 then
 {
@@ -121,7 +115,26 @@ then
 } 2> /dev/null
 fi
 
+#### Configure system/admin key from Vault key path or specified password
+if [ -n "$VAULT_SYSTEM_KEY_PATH" ]
+then
+  if [ -n "$ADMIN_PASSWORD" ]
+  then
+    echo ===== Specify either ADMIN_PASSWORD or VAULT_SYSTEM_KEY_PATH \(not both\)
+    exit 1
+  fi
+
+  ANSIBLE_VARS="$ANSIBLE_VARS vault_system_key_path=$VAULT_SYSTEM_KEY_PATH"
+fi
+
 set -x
+
+#### Release selection, git or a version from pypi
+if [ -z "$RELEASE" ]
+then
+  RELEASE="0.2"
+fi
+VARIABLES="$VARIABLES release=$RELEASE"
 
 #### Default settings
 BOOTDELAY="${BOOTDELAY:-2}"
@@ -140,11 +153,6 @@ ANSIBLE_VARS="$ANSIBLE_VARS ansible_root=$cwd"
 ANSIBLE_VARS="$ANSIBLE_VARS uniqifier=$UNIQIFIER"
 ANSIBLE_VARS="$ANSIBLE_VARS admin_password=$ADMIN_PASSWORD"
 ANSIBLE_VARS="$ANSIBLE_VARS floating_network_ipblock=$FLOATING_IP_BLOCK"
-
-if [ -n "$VAULT_SYSTEM_KEY_PATH" ]
-then
-  ANSIBLE_VARS="$ANSIBLE_VARS vault_system_key_path=$VAULT_SYSTEM_KEY_PATH"
-fi
 
 for var in $VARIABLES
 do
