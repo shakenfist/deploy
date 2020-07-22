@@ -177,13 +177,6 @@
       command: pip3 install shakenfist=={{release}}
       when: release != "git"
 
-    - name: Install shakenfist bash autocompletion
-      lineinfile:
-        path: /root/.bashrc
-        create: yes
-        regexp: 'eval "\$\(_SF_CLIENT_COMPLETE='
-        line: 'eval "$(_SF_CLIENT_COMPLETE=source_bash sf-client)"'
-
     - name: Create config directory
       file:
         path: /etc/sf
@@ -221,6 +214,13 @@
         owner: root
         group: sudo
         mode: u=r,g=r,o=
+
+    - name: Install sfrc for root user
+      lineinfile:
+        path: /root/.bashrc
+        create: yes
+        regexp: '. /etc/sf/sfrc'
+        line: '. /etc/sf/sfrc'
 
     - name: Write a global auth file
       template:
