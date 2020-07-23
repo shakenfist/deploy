@@ -204,18 +204,25 @@
       command: pip3 install shakenfist=={{release}}
       when: release != "git"
 
-    - name: Install shakenfist bash autocompletion
-      lineinfile:
-        path: /root/.bashrc
-        create: yes
-        regexp: 'eval "\$\(_SF_CLIENT_COMPLETE='
-        line: 'eval "$(_SF_CLIENT_COMPLETE=source_bash sf-client)"'
-
     - name: Create config directory
       file:
         path: /etc/sf
         state: directory
         mode: "0755"
+
+    - name: Set system key from extra-vars
+      set_fact:
+        system_key: "{{admin_password}}"
+
+    - name: Use Hashicorp Vault for "system" namespace key (if enabled)
+      block:
+        - set_fact:
+            system_key: "{{lookup('hashivault', '{{vault_system_key_path}}', 'key')}}"
+          when: vault_system_key_path is defined
+
+      rescue:
+        - fail:
+            msg: "Ensure that you have installed ansible-modules-hashivault ie. pip install ansible-modules-hashivault"
 
     - name: Write sfrc file
       template:
@@ -224,6 +231,13 @@
         owner: root
         group: sudo
         mode: u=r,g=r,o=
+
+    - name: Install sfrc for root user
+      lineinfile:
+        path: /root/.bashrc
+        create: yes
+        regexp: '. /etc/sf/sfrc'
+        line: '. /etc/sf/sfrc'
 
     - name: Write a global auth file
       template:
@@ -352,8 +366,8 @@
         enabled: yes
         state: restarted
 
-    - name: Create an admin namespace called "system" with a password configured
-      shell: sf-passwd deploy "{{ADMIN_PASSWORD}}"
+    - name: Create an admin namespace called "system" with one key configured
+      shell: sf-passwd deploy "{{system_key}}"
 
 - hosts: hypervisors
   any_errors_fatal: true
