@@ -131,7 +131,7 @@
       when: node_egress_nic is not defined
 
     - name: Determine default interface MTU
-      shell: ip link show eno1 | grep eno1 | sed -e 's/.*mtu //' -e 's/ .*//'
+      shell: ip link show {{node_egress_nic}} | grep mtu | sed -e 's/.*mtu //' -e 's/ .*//'
       register: node_mtu_complex
 
     - name: Extract default interface MTU
