@@ -52,7 +52,10 @@ class BaseTestCase(testtools.TestCase):
 
             time.sleep(5)
 
-        raise TimeoutException()
+        for event in self.system_client.get_instance_events(instance_uuid):
+            print(event)
+        raise TimeoutException(
+            'Instance %s never triggered a login prompt after %s' % (instance_uuid, after))
 
     def _test_ping(self, network_uuid, ip, result='1'):
         out, _ = processutils.execute(
