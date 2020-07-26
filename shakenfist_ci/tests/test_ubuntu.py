@@ -25,7 +25,7 @@ class TestUbuntu(base.BaseTestCase):
 
     def test_ubuntu_pings(self):
         inst = self.test_client.create_instance(
-            'ubuntu', 1, 1,
+            'ubuntu', 1, 1024,
             [
                 {
                     'network_uuid': self.net['uuid']
@@ -45,7 +45,7 @@ class TestUbuntu(base.BaseTestCase):
         # cloud image. This is ok though, because we should be using the config drive
         # style interface information anyway.
         ip = self.test_client.get_instance_interfaces(inst['uuid'])[0]['ipv4']
-        self._test_ping(self.net['uuid'], ip)
+        self._test_ping(self.net['uuid'], ip, True)
 
         self.test_client.delete_instance(inst['uuid'])
         inst_uuids = []

@@ -27,7 +27,7 @@ class TestPlacement(base.BaseTestCase):
     def test_placement_works(self):
         # Create an instance, force it to be on the name node as us.
         inst = self.test_client.create_instance(
-            'ubuntu', 1, 1,
+            'cirros', 1, 1024,
             [
                 {
                     'network_uuid': self.net['uuid']
@@ -47,7 +47,7 @@ class TestPlacement(base.BaseTestCase):
         # cloud image. This is ok though, because we should be using the config drive
         # style interface information anyway.
         ip = self.test_client.get_instance_interfaces(inst['uuid'])[0]['ipv4']
-        self._test_ping(self.net['uuid'], ip)
+        self._test_ping(self.net['uuid'], ip, True)
 
         # Ensure that deleting a local instance works
         self.test_client.delete_instance(inst['uuid'])
@@ -58,7 +58,7 @@ class TestPlacement(base.BaseTestCase):
 
         # Create another instance, force it to be on a remote node.
         inst = self.test_client.create_instance(
-            'ubuntu', 1, 1,
+            'cirros', 1, 1024,
             [
                 {
                     'network_uuid': self.net['uuid']
@@ -78,7 +78,7 @@ class TestPlacement(base.BaseTestCase):
         # cloud image. This is ok though, because we should be using the config drive
         # style interface information anyway.
         ip = self.test_client.get_instance_interfaces(inst['uuid'])[0]['ipv4']
-        self._test_ping(self.net['uuid'], ip)
+        self._test_ping(self.net['uuid'], ip, True)
 
         # Ensure that deleting a remote instance works
         self.test_client.delete_instance(inst['uuid'])

@@ -23,7 +23,7 @@ class TestSnapshots(base.BaseTestCase):
 
     def test_single_disk_snapshots(self):
         inst = self.test_client.create_instance(
-            'cirros', 1, 1,
+            'cirros', 1, 1024,
             [
                 {
                     'network_uuid': self.net['uuid']
@@ -60,7 +60,7 @@ class TestSnapshots(base.BaseTestCase):
 
     def test_multiple_disk_snapshots(self):
         inst = self.test_client.create_instance(
-            'cirros', 1, 1,
+            'cirros', 1, 1024,
             [
                 {
                     'network_uuid': self.net['uuid']

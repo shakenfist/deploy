@@ -57,12 +57,15 @@ class BaseTestCase(testtools.TestCase):
         raise TimeoutException(
             'Instance %s never triggered a login prompt after %s' % (instance_uuid, after))
 
-    def _test_ping(self, network_uuid, ip, result='1'):
-        out, _ = processutils.execute(
-            'ip netns exec %s ping -c 1 %s | grep -c " 0%% packet loss"'
-            % (network_uuid, ip),
+    def _test_ping(self, network_uuid, ip, expected):
+        out, err = processutils.execute(
+            'ip netns exec %s ping -c 1 %s' % (network_uuid, ip),
             shell=True, check_exit_code=[0, 1])
-        self.assertEqual(result, out.rstrip())
+
+        actual = out.find(' 0% packet loss') != -1
+        if expected != actual:
+            self.fail('Ping test failed. Expected %s != actual %s.\nout: %s\nerr: %s\n'
+                      % (expected, actual, out, err))
 
 
 class LoggingSocket(object):

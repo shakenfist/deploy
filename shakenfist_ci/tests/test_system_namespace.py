@@ -16,7 +16,7 @@ class TestSystemNamespace(base.BaseTestCase):
         self.assertIn(net['uuid'], nets)
 
         inst = self.system_client.create_instance(
-            'cirros', 1, 1,
+            'cirros', 1, 1024,
             [
                 {
                     'network_uuid': net['uuid']
