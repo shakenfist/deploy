@@ -236,8 +236,8 @@
       lineinfile:
         path: /root/.bashrc
         create: yes
-        regexp: '. /etc/sf/sfrc'
-        line: '. /etc/sf/sfrc'
+        regexp: ". /etc/sf/sfrc"
+        line: ". /etc/sf/sfrc"
 
     - name: Write a global auth file
       template:
@@ -455,6 +455,13 @@
         daemon_reload: yes
 
 - hosts: db
+  roles:
+    - role: andrewrothstein.terraform
+      terraform_binary_dir: /usr/local/bin/terraform_install
+
+    - role: andrewrothstein.go
+
+- hosts: db
   any_errors_fatal: true
   become: yes
   become_method: sudo
@@ -462,5 +469,27 @@
   connection: ssh
 
   tasks:
+    - name: Clear out old terraform providers
+      file:
+        path: /srv/shakenfist/terraform-provider-shakenfist
+        state: absent
+
+    - name: Clone the terraform provider
+      git:
+        repo: https://github.com/shakenfist/terraform-provider-shakenfist
+        dest: /srv/shakenfist/terraform-provider-shakenfist
+
+    - name: Build terraform provider
+      shell:
+        cmd: go build
+        chdir: /srv/shakenfist/terraform-provider-shakenfist
+
+    - name: Install terraform provider
+      copy:
+        src: /srv/shakenfist/terraform-provider-shakenfist/terraform-provider-shakenfist
+        dest: /usr/local/bin/terraform_install/terraform-provider-shakenfist
+        remote_src: yes
+        mode: u+rx,g+rx,o+rx
+
     - name: Run any upgrade steps
       shell: sf-upgrade
