@@ -4,8 +4,8 @@
     state: present
     force_init: true
     variables:
-      project: "{{project}}"
-      uniqifier: "{{uniqifier}}"
+      namespace: "{{namespace}}"
+      system_key: "{{system_key}}"
   register: terraform_out
 
 - name: Add sf-1 to ansible

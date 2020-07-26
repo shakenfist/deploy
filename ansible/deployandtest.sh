@@ -110,7 +110,7 @@ then
     echo ===== Must specify the Shaken Fist namespace to use in \$SHAKENFIST_TARGET_NAMESPACE
     exit 1
   fi
-  VARIABLES="$VARIABLES namespace=$SHAKENFIST_NAMESPACE"
+  VARIABLES="$VARIABLES namespace=$SHAKENFIST_TARGET_NAMESPACE"
 
   if [ -z "$SHAKENFIST_KEY" ]
   then
