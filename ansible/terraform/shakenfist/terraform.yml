@@ -2,7 +2,6 @@
   terraform:
     project_path: "{{ansible_root}}/terraform/gcp"
     state: present
-    force_init: true
     variables:
       namespace: "{{namespace}}"
       system_key: "{{system_key}}"
