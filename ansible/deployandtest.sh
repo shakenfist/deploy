@@ -118,6 +118,12 @@ then
     exit 1
   fi
   VARIABLES="$VARIABLES system_key=$SHAKENFIST_KEY"
+
+  if [ -z "$SHAKENFIST_SSH_KEY" ]
+  then
+    echo ===== Must specify a SSH public key\'s text in \$SHAKENFIST_SSH_KEY
+  fi
+  VARIABLES="$VARIABLES ssh_key=\"$SHAKENFIST_SSH_KEY\""
 fi
 
 #### Check that a valid cloud was specified

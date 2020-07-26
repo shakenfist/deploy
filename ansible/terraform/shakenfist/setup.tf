@@ -6,6 +6,10 @@ variable "system_key" {
   description = "The key for the Shaken Fist system namespace"
 }
 
+variable "ssh_key" {
+  description = "SSH public key text for ansible instance authentication"
+}
+
 variable "uniqifier" {
   description = "A unique string to prefix hostnames with"
 }
@@ -59,6 +63,7 @@ resource "shakenfist_instance" "sf_1" {
   networks = [
     "uuid=${shakenfist_network.internal.id},address=192.168.0.11",
   ]
+  ssh_key = var.ssh_key
 }
 
 resource "shakenfist_instance" "sf_2" {
@@ -74,6 +79,7 @@ resource "shakenfist_instance" "sf_2" {
   networks = [
     "uuid=${shakenfist_network.internal.id},address=192.168.0.12",
   ]
+  ssh_key = var.ssh_key
 }
 
 resource "shakenfist_instance" "sf_3" {
@@ -89,6 +95,7 @@ resource "shakenfist_instance" "sf_3" {
   networks = [
     "uuid=${shakenfist_network.internal.id},address=192.168.0.13",
   ]
+  ssh_key = var.ssh_key
 }
 
 resource "shakenfist_float" "sf_1_external" {
