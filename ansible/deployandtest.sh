@@ -105,9 +105,9 @@ fi
 #### Shakenfist
 if [ "$CLOUD" == "shakenfist" ]
 then
-  if [ -z "$SHAKENFIST_NAMESPACE" ]
+  if [ -z "$SHAKENFIST_TARGET_NAMESPACE" ]
   then
-    echo ===== Must specify the Shaken Fist namespace to use in \$SHAKENFIST_NAMESPACE
+    echo ===== Must specify the Shaken Fist namespace to use in \$SHAKENFIST_TARGET_NAMESPACE
     exit 1
   fi
   VARIABLES="$VARIABLES namespace=$SHAKENFIST_NAMESPACE"
