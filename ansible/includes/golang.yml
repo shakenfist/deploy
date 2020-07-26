@@ -1,0 +1,14 @@
+- name: Install golang prerequisites
+  apt:
+    name: ["apt-transport-https", "software-properties-common"]
+    update_cache: yes
+    state: latest
+
+# TODO(mikal): is there an ansible module for this?
+- name: Add golang APT repository
+  shell: add-apt-repository -y ppa:longsleep/golang-backports
+
+- name: Install golang
+  apt:
+    name: ["golang-go"]
+    update_cache: yes
