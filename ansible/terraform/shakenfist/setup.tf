@@ -57,7 +57,7 @@ resource "shakenfist_instance" "sf_1" {
     type = "disk"
   }
   networks = [
-    "uuid=${shakenfist_network.internal.id}",
+    "uuid=${shakenfist_network.internal.id},address=192.168.0.11",
   ]
 }
 
@@ -72,7 +72,7 @@ resource "shakenfist_instance" "sf_2" {
     type = "disk"
   }
   networks = [
-    "uuid=${shakenfist_network.internal.id}",
+    "uuid=${shakenfist_network.internal.id},address=192.168.0.12",
   ]
 }
 
@@ -87,7 +87,7 @@ resource "shakenfist_instance" "sf_3" {
     type = "disk"
   }
   networks = [
-    "uuid=${shakenfist_network.internal.id}",
+    "uuid=${shakenfist_network.internal.id},address=192.168.0.13",
   ]
 }
 
@@ -107,10 +107,22 @@ output "sf_1_external" {
   value = shakenfist_float.sf_1_external.ipv4
 }
 
-data "shakenfist_interface" "sf_1_interface" {
-  value = shakenfist_instance.sf_1.interfaces[0]
+output "sf_2_external" {
+  value = shakenfist_float.sf_2_external.ipv4
+}
+
+output "sf_3_external" {
+  value = shakenfist_float.sf_3_external.ipv4
 }
 
 output "sf_1_internal" {
-  value = shakenfist_interface.sf_1_interface
+  value = "192.168.0.11"
+}
+
+output "sf_2_internal" {
+  value = "192.168.0.12"
+}
+
+output "sf_3_internal" {
+  value = "192.168.0.13"
 }

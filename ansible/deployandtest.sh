@@ -1,6 +1,6 @@
 #!/bin/bash -e
 #
-# ./deployandtest.sh [aws|aws-single-node|gcp|metal|openstack]
+# ./deployandtest.sh [aws|aws-single-node|gcp|metal|openstack|shakenfist]
 #
 #
 # Note: Tests can be skipped by setting $SKIP_SF_TESTS
@@ -102,12 +102,30 @@ then
   VARIABLES="$VARIABLES metal_ip_sf3=$METAL_IP_SF3"
 fi
 
+#### Shakenfist
+if [ "$CLOUD" == "shakenfist" ]
+then
+  if [ -z "$SHAKENFIST_NAMESPACE" ]
+  then
+    echo ===== Must specify the Shaken Fist namespace to use in \$SHAKENFIST_NAMESPACE
+    exit 1
+  fi
+  VARIABLES="$VARIABLES namespace=$SHAKENFIST_NAMESPACE"
+
+  if [ -z "$SHAKENFIST_KEY" ]
+  then
+    echo ===== Must specify the Shaken Fist system key to use in \$SHAKENFIST_KEY
+    exit 1
+  fi
+  VARIABLES="$VARIABLES system_key=$SHAKENFIST_KEY"
+fi
+
 #### Check that a valid cloud was specified
 if [ -z "$VARIABLES" ]
 then
 {
   echo ====
-  echo ==== CLOUD should be specified: aws, aws-single-node, gcp, metal, openstack
+  echo ==== CLOUD should be specified: aws, aws-single-node, gcp, metal, openstack, shakenfist
   echo ==== eg.  ./deployandtest/sh gcp
   echo ====
   echo ==== Continuing, because you might know what you are doing...
@@ -132,7 +150,7 @@ set -x
 #### Release selection, git or a version from pypi
 if [ -z "$RELEASE" ]
 then
-  RELEASE="0.2"
+  RELEASE="0.2.3"
 fi
 VARIABLES="$VARIABLES release=$RELEASE"
 
