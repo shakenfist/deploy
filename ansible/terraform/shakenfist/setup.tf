@@ -60,6 +60,10 @@ resource "shakenfist_instance" "sf_1" {
     bus  = "virtio"
     type = "disk"
   }
+  video {
+    model  = "cirrus"
+    memory = 16384
+  }
   networks = [
     "uuid=${shakenfist_network.internal.id},address=192.168.0.11",
   ]
@@ -76,6 +80,10 @@ resource "shakenfist_instance" "sf_2" {
     bus  = "virtio"
     type = "disk"
   }
+  video {
+    model  = "cirrus"
+    memory = 16384
+  }
   networks = [
     "uuid=${shakenfist_network.internal.id},address=192.168.0.12",
   ]
@@ -91,6 +99,10 @@ resource "shakenfist_instance" "sf_3" {
     base = "ubuntu:18.04"
     bus  = "virtio"
     type = "disk"
+  }
+  video {
+    model  = "cirrus"
+    memory = 16384
   }
   networks = [
     "uuid=${shakenfist_network.internal.id},address=192.168.0.13",

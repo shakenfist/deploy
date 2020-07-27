@@ -6,6 +6,7 @@
     variables:
       namespace: "{{namespace}}"
       system_key: "{{system_key}}"
+      ssh_key: "{{ssh_key}}"
   register: terraform_out
 
 - name: Add sf-1 to ansible
