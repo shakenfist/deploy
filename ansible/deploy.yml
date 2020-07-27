@@ -469,6 +469,8 @@
   connection: ssh
 
   tasks:
+    - include: includes/ansible.yml
+
     - name: Clear out old terraform providers
       file:
         path: /srv/shakenfist/terraform-provider-shakenfist

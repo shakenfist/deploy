@@ -1,12 +1,8 @@
-- name: Do a manual init
-  shell:
-    cmd: terraform init
-
-    chdir: "{{ansible_root}}/terraform/shakenfist"
 - name: Deploy infrastructure
   terraform:
     project_path: "{{ansible_root}}/terraform/shakenfist"
     state: present
+    force_init: true
     variables:
       namespace: "{{namespace}}"
       system_key: "{{system_key}}"
