@@ -10,10 +10,6 @@ variable "ssh_key" {
   description = "SSH public key text for ansible instance authentication"
 }
 
-variable "uniqifier" {
-  description = "A unique string to prefix hostnames with"
-}
-
 // Create new namespace using Shaken Fist "system" privilege.
 provider "shakenfist" {
   alias      = "system"
