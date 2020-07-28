@@ -1,13 +1,13 @@
-variable "namespace" {
-  description = "The Shaken Fist namespace to create"
-}
-
 variable "system_key" {
   description = "The key for the Shaken Fist system namespace"
 }
 
 variable "ssh_key" {
   description = "SSH public key text for ansible instance authentication"
+}
+
+variable "uniqifier" {
+  description = "The Shaken Fist namespace to create"
 }
 
 // Create new namespace using Shaken Fist "system" privilege.
@@ -20,7 +20,7 @@ provider "shakenfist" {
 
 resource "shakenfist_namespace" "ci" {
   provider = shakenfist.system
-  name     = var.namespace
+  name     = var.uniqifier
 }
 
 resource "shakenfist_key" "cikey" {
@@ -60,9 +60,9 @@ resource "shakenfist_instance" "sf_1" {
     model  = "cirrus"
     memory = 16384
   }
-  networks = [
-    "uuid=${shakenfist_network.internal.id},address=192.168.0.11",
-  ]
+  network {
+    network_uuid = shakenfist_network.internal.id
+  }
   ssh_key = var.ssh_key
 }
 
@@ -80,9 +80,9 @@ resource "shakenfist_instance" "sf_2" {
     model  = "cirrus"
     memory = 16384
   }
-  networks = [
-    "uuid=${shakenfist_network.internal.id},address=192.168.0.12",
-  ]
+  network {
+    network_uuid = shakenfist_network.internal.id
+  }
   ssh_key = var.ssh_key
 }
 
@@ -100,22 +100,22 @@ resource "shakenfist_instance" "sf_3" {
     model  = "cirrus"
     memory = 16384
   }
-  networks = [
-    "uuid=${shakenfist_network.internal.id},address=192.168.0.13",
-  ]
+  network {
+    network_uuid = shakenfist_network.internal.id
+  }
   ssh_key = var.ssh_key
 }
 
 resource "shakenfist_float" "sf_1_external" {
-  interface = shakenfist_instance.sf_1.interfaces[0]
+  interface = shakenfist_instance.sf_1.network[0].interface_uuid
 }
 
 resource "shakenfist_float" "sf_2_external" {
-  interface = shakenfist_instance.sf_2.interfaces[0]
+  interface = shakenfist_instance.sf_2.network[0].interface_uuid
 }
 
 resource "shakenfist_float" "sf_3_external" {
-  interface = shakenfist_instance.sf_3.interfaces[0]
+  interface = shakenfist_instance.sf_3.network[0].interface_uuid
 }
 
 output "sf_1_external" {
@@ -131,13 +131,13 @@ output "sf_3_external" {
 }
 
 output "sf_1_internal" {
-  value = "192.168.0.11"
+  value = shakenfist_instance.sf_1.network[0].ipv4
 }
 
 output "sf_2_internal" {
-  value = "192.168.0.12"
+  value = shakenfist_instance.sf_2.network[0].ipv4
 }
 
 output "sf_3_internal" {
-  value = "192.168.0.13"
+  value = shakenfist_instance.sf_3.network[0].ipv4
 }

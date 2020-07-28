@@ -8,7 +8,7 @@
   tasks:
     - name: Ensure unit tests pass
       shell:
-        cmd: tox -epy37
+        cmd: tox -epy3
         chdir: ../shakenfist
       when: release == "git"
 

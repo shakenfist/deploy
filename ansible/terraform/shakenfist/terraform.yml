@@ -4,7 +4,7 @@
     state: present
     force_init: true
     variables:
-      namespace: "{{namespace}}"
+      uniqifier: "{{uniqifier}}"
       system_key: "{{system_key}}"
       ssh_key: "{{ssh_key}}"
   register: terraform_out

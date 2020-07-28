@@ -8,6 +8,8 @@
 
 #### Required settings
 CLOUD=${1:-$CLOUD}
+TERRAFORM_VARS=""
+ANSIBLE_VARS=""
 
 #### AWS
 if [ "$CLOUD" == "aws" ] || [ "$CLOUD" == "aws-single-node" ]
@@ -105,13 +107,6 @@ fi
 #### Shakenfist
 if [ "$CLOUD" == "shakenfist" ]
 then
-  if [ -z "$SHAKENFIST_TARGET_NAMESPACE" ]
-  then
-    echo ===== Must specify the Shaken Fist namespace to use in \$SHAKENFIST_TARGET_NAMESPACE
-    exit 1
-  fi
-  VARIABLES="$VARIABLES namespace=$SHAKENFIST_TARGET_NAMESPACE"
-
   if [ -z "$SHAKENFIST_KEY" ]
   then
     echo ===== Must specify the Shaken Fist system key to use in \$SHAKENFIST_KEY
@@ -123,7 +118,8 @@ then
   then
     echo ===== Must specify a SSH public key\'s text in \$SHAKENFIST_SSH_KEY
   fi
-  VARIABLES="$VARIABLES ssh_key=\"$SHAKENFIST_SSH_KEY\""
+  TERRAFORM_VARS="$TERRAFORM_VARS -var=ssh_key=\"$SHAKENFIST_SSH_KEY\""
+  ANSIBLE_VARS="$ANSIBLE_VARS ssh_key=\"$SHAKENFIST_SSH_KEY\""
 fi
 
 #### Check that a valid cloud was specified
@@ -169,7 +165,7 @@ UNIQIFIER="${UNIQIFIER:-$USER"-"`date "+%y%m%d"`"-"`pwgen --no-capitalize -n1`"-
 
 # Setup variables for consumption by ansible and terraform
 cwd=`pwd`
-TERRAFORM_VARS="-var=uniqifier=$UNIQIFIER"
+TERRAFORM_VARS="$TERRAFORM_VARS -var=uniqifier=$UNIQIFIER"
 
 ANSIBLE_VARS="$ANSIBLE_VARS cloud=$CLOUD"
 ANSIBLE_VARS="$ANSIBLE_VARS bootdelay=$BOOTDELAY"
@@ -177,6 +173,8 @@ ANSIBLE_VARS="$ANSIBLE_VARS ansible_root=$cwd"
 ANSIBLE_VARS="$ANSIBLE_VARS uniqifier=$UNIQIFIER"
 ANSIBLE_VARS="$ANSIBLE_VARS admin_password=$ADMIN_PASSWORD"
 ANSIBLE_VARS="$ANSIBLE_VARS floating_network_ipblock=$FLOATING_IP_BLOCK"
+
+echo "VARIABLES: $VARIABLES"
 
 for var in $VARIABLES
 do
