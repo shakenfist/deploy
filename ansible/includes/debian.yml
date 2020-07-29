@@ -7,27 +7,7 @@
 
 - name: Install dependancies
   apt:
-    name:
-      [
-        "arping",
-        "bridge-utils",
-        "cpu-checker",
-        "dnsmasq",
-        "dnsutils",
-        "etcd-client",
-        "git",
-        "gunicorn3",
-        "libssl-dev",
-        "libvirt-daemon-system",
-        "libvirt-dev",
-        "net-tools",
-        "prometheus-node-exporter",
-        "pwgen",
-        "python-libvirt",
-        "python3-libvirt",
-        "qemu-kvm",
-        "unzip",
-      ]
+    name: "{{ shakenfist_deps }}"
     state: latest
 
 - name: Disable dnsmasq

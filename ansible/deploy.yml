@@ -6,6 +6,8 @@
     release: git
 
   tasks:
+    - include_tasks: tasks/distro-check.yml
+
     - name: Ensure unit tests pass
       shell:
         cmd: tox -epy3
@@ -114,6 +116,9 @@
         enabled: yes
         state: restarted
       when: hostvars['localhost']['database_node_ip'] != node_ip
+
+    - name: Load default vars
+      include_vars: main.yml
 
     - include: includes/debian.yml
 
