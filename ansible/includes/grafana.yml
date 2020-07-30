@@ -1,4 +1,3 @@
---- # https://gist.github.com/rbq/886587980894e98b23d0eee2a1d84933
 - name: Install Grafana prerequisites
   apt:
     name: ["apt-transport-https", "software-properties-common"]

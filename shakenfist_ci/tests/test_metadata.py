@@ -28,7 +28,7 @@ class TestInstanceMetadata(base.BaseTestCase):
 
     def test_simple(self):
         inst = self.test_client.create_instance(
-            'cirros', 1, 1,
+            'cirros', 1, 1024,
             [
                 {
                     'network_uuid': self.net['uuid']

@@ -38,7 +38,7 @@ sudo echo 'iface eth1 inet dhcp'  >> /etc/network/interfaces
 sudo /etc/init.d/S40network restart"""
 
         inst = self.test_client.create_instance(
-            'cirros', 1, 1,
+            'cirros', 1, 1024,
             [
                 {
                     'network_uuid': self.net_one['uuid']
@@ -63,4 +63,4 @@ sudo /etc/init.d/S40network restart"""
         self.assertEqual(2, len(ifaces))
 
         for iface in ifaces:
-            self._test_ping(iface['network_uuid'], iface['ipv4'])
+            self._test_ping(iface['network_uuid'], iface['ipv4'], True)

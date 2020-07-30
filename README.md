@@ -21,7 +21,7 @@ cd deploy
 git submodule init
 git submodule update
 cd ansible
-ansible-galaxy install andrewrothstein.etcd-cluster
+ansible-galaxy install andrewrothstein.etcd-cluster andrewrothstein.terraform andrewrothstein.go
 ```
 
 ## Google Cloud
