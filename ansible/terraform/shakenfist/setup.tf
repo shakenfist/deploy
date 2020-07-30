@@ -23,11 +23,17 @@ resource "shakenfist_namespace" "ci" {
   name     = var.uniqifier
 }
 
+resource "random_string" "randomkey" {
+  length           = 36
+  special          = true
+  override_special = "/@£$"
+}
+
 resource "shakenfist_key" "cikey" {
   provider  = shakenfist.system
   namespace = shakenfist_namespace.ci.name
   keyname   = "robot"
-  key       = "aMuop7IS6eithu9Ohqu4"
+  key       = random_string.randomkey.result
 }
 
 //
