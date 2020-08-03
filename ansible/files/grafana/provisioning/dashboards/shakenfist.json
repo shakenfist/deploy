@@ -15,7 +15,7 @@
     "editable": true,
     "gnetId": null,
     "graphTooltip": 0,
-    "id": 2,
+    "id": 6,
     "links": [],
     "panels": [
         {
@@ -23,11 +23,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -54,7 +53,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -67,7 +66,7 @@
                     "expr": "cpu_load_5",
                     "interval": "",
                     "legendFormat": "{{instance}} loadavg 5",
-                    "refId": "B"
+                    "refId": "A"
                 }
             ],
             "thresholds": [],
@@ -113,14 +112,13 @@
         },
         {
             "aliasColors": {},
-            "bars": false,
+            "bars": true,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -143,17 +141,17 @@
                 "total": false,
                 "values": false
             },
-            "lines": true,
+            "lines": false,
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
             "seriesOverrides": [],
             "spaceLength": 10,
-            "stack": false,
+            "stack": true,
             "steppedLine": false,
             "targets": [
                 {
@@ -209,11 +207,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -240,7 +237,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -299,14 +296,13 @@
         },
         {
             "aliasColors": {},
-            "bars": false,
+            "bars": true,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -317,6 +313,425 @@
                 "w": 5,
                 "x": 15,
                 "y": 0
+            },
+            "hiddenSeries": false,
+            "id": 19,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": false,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pluginVersion": "7.1.1",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "instances_total",
+                    "format": "time_series",
+                    "instant": false,
+                    "interval": "",
+                    "legendFormat": "{{instance}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Instances total",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "dashboardFilter": "",
+            "dashboardTags": [],
+            "datasource": null,
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "folderId": null,
+            "gridPos": {
+                "h": 15,
+                "w": 4,
+                "x": 20,
+                "y": 0
+            },
+            "id": 27,
+            "limit": 10,
+            "nameFilter": "",
+            "onlyAlertsOnDashboard": true,
+            "pluginVersion": "7.1.0",
+            "show": "current",
+            "sortOrder": 1,
+            "stateFilter": [],
+            "timeFrom": null,
+            "timeShift": null,
+            "title": "SF Alerts",
+            "type": "alertlist"
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "grafanacloud-fifthdomain-prom",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 5,
+                "x": 0,
+                "y": 8
+            },
+            "hiddenSeries": false,
+            "id": 8,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pluginVersion": "7.1.1",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "memory_max * 1024 * 1024",
+                    "interval": "",
+                    "legendFormat": "{{instance}} max",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Memory Max",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "decbytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "grafanacloud-fifthdomain-prom",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 5,
+                "x": 5,
+                "y": 8
+            },
+            "hiddenSeries": false,
+            "id": 11,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pluginVersion": "7.1.1",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [
+                {
+                    "alias": "10.2.1.11:13001 shared memory",
+                    "yaxis": 2
+                },
+                {
+                    "alias": "10.2.1.12:13001 shared memory",
+                    "yaxis": 2
+                },
+                {
+                    "alias": "10.2.1.13:13001 shared memory",
+                    "yaxis": 2
+                }
+            ],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "sum(memory_available * 1024 * 1024)",
+                    "interval": "",
+                    "legendFormat": "Memory available",
+                    "refId": "A"
+                },
+                {
+                    "expr": "sum(memory_ksm_pages_sharing * 4096)\n",
+                    "interval": "",
+                    "legendFormat": "Memory shared",
+                    "refId": "B"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Memory Utilisation",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "decbytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": "322122547200",
+                    "min": null,
+                    "show": false
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": true,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "grafanacloud-fifthdomain-prom",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 5,
+                "x": 10,
+                "y": 8
+            },
+            "hiddenSeries": false,
+            "id": 10,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": false,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pluginVersion": "7.1.1",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": true,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "memory_total_instance_actual * 1024 * 1024",
+                    "interval": "",
+                    "legendFormat": "{{instance}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "Instance memory",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "decbytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": "0",
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "grafanacloud-fifthdomain-prom",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 5,
+                "x": 15,
+                "y": 8
             },
             "hiddenSeries": false,
             "id": 22,
@@ -333,7 +748,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -343,7 +758,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(rate(grpc_server_started_total[5m]))",
+                    "expr": "grpc",
                     "interval": "",
                     "legendFormat": "Rate",
                     "refId": "A"
@@ -395,420 +810,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 1,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 7,
-                "w": 5,
-                "x": 0,
-                "y": 8
-            },
-            "hiddenSeries": false,
-            "id": 8,
-            "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-            },
-            "lines": true,
-            "linewidth": 1,
-            "nullPointMode": "null",
-            "percentage": false,
-            "pluginVersion": "7.1.0",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "memory_max",
-                    "interval": "",
-                    "legendFormat": "{{instance}} max",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Memory Max",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "decmbytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 0,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 7,
-                "w": 5,
-                "x": 5,
-                "y": 8
-            },
-            "hiddenSeries": false,
-            "id": 11,
-            "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-            },
-            "lines": true,
-            "linewidth": 2,
-            "nullPointMode": "null",
-            "percentage": false,
-            "pluginVersion": "7.1.0",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [
-                {
-                    "alias": "10.2.1.11:13001 shared pages",
-                    "yaxis": 2
-                },
-                {
-                    "alias": "10.2.1.12:13001 shared pages",
-                    "yaxis": 2
-                },
-                {
-                    "alias": "10.2.1.13:13001 shared pages",
-                    "yaxis": 2
-                },
-                {
-                    "alias": "10.2.1.13:13001 sharing pages",
-                    "yaxis": 2
-                },
-                {
-                    "alias": "10.2.1.12:13001 sharing pages",
-                    "yaxis": 2
-                },
-                {
-                    "alias": "10.2.1.11:13001 sharing pages",
-                    "yaxis": 2
-                }
-            ],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "memory_available",
-                    "interval": "",
-                    "legendFormat": "{{instance}} available",
-                    "refId": "B"
-                },
-                {
-                    "expr": "memory_available_libvirt",
-                    "interval": "",
-                    "legendFormat": "{{instance}} available libvirt",
-                    "refId": "A"
-                },
-                {
-                    "expr": "memory_ksm_pages_sharing * 4096",
-                    "interval": "",
-                    "legendFormat": "{{instance}} sharing pages",
-                    "refId": "C"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Memory Available",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "decmbytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "format": "bytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 1,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 7,
-                "w": 5,
-                "x": 10,
-                "y": 8
-            },
-            "hiddenSeries": false,
-            "id": 10,
-            "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-            },
-            "lines": true,
-            "linewidth": 1,
-            "nullPointMode": "null",
-            "percentage": false,
-            "pluginVersion": "7.1.0",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "memory_total_instance_actual",
-                    "interval": "",
-                    "legendFormat": "{{instance}}",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Instance memory",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "bytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": "0",
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 1,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 8,
-                "w": 5,
-                "x": 15,
-                "y": 8
-            },
-            "hiddenSeries": false,
-            "id": 25,
-            "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-            },
-            "lines": true,
-            "linewidth": 1,
-            "nullPointMode": "null",
-            "percentage": false,
-            "pluginVersion": "7.1.0",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "sum(rate(grpc_server_handled_total{grpc_code!=\\\"OK\\\"}[5m])",
-                    "interval": "",
-                    "legendFormat": "Rate",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "etcd Failed RPCs",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -835,7 +840,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -897,11 +902,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -928,7 +932,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -990,11 +994,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -1021,7 +1024,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1083,11 +1086,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -1097,13 +1099,15 @@
                 "h": 7,
                 "w": 5,
                 "x": 15,
-                "y": 16
+                "y": 15
             },
             "hiddenSeries": false,
-            "id": 23,
+            "id": 25,
             "legend": {
                 "avg": false,
                 "current": false,
+                "hideEmpty": false,
+                "hideZero": false,
                 "max": false,
                 "min": false,
                 "show": true,
@@ -1114,7 +1118,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1124,9 +1128,10 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "etcd_mvcc_db_total_size_in_bytes",
+                    "expr": "sum(rate(grpc_server_handled_total{grpc_code!=\"OK\"}[5m]))",
+                    "instant": false,
                     "interval": "",
-                    "legendFormat": "{{instance}}",
+                    "legendFormat": "Rate",
                     "refId": "A"
                 }
             ],
@@ -1134,100 +1139,7 @@
             "timeFrom": null,
             "timeRegions": [],
             "timeShift": null,
-            "title": "etcd DB Size",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "buckets": null,
-                "mode": "time",
-                "name": null,
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "format": "bytes",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                },
-                {
-                    "format": "short",
-                    "label": null,
-                    "logBase": 1,
-                    "max": null,
-                    "min": null,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false,
-                "alignLevel": null
-            }
-        },
-        {
-            "aliasColors": {},
-            "bars": true,
-            "dashLength": 10,
-            "dashes": false,
-            "datasource": null,
-            "fieldConfig": {
-                "defaults": {
-                    "custom": {},
-                    "links": []
-                },
-                "overrides": []
-            },
-            "fill": 1,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 7,
-                "w": 5,
-                "x": 0,
-                "y": 22
-            },
-            "hiddenSeries": false,
-            "id": 19,
-            "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-            },
-            "lines": false,
-            "linewidth": 1,
-            "nullPointMode": "null",
-            "percentage": false,
-            "pluginVersion": "7.1.0",
-            "pointradius": 2,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": true,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "expr": "instances_total",
-                    "interval": "",
-                    "legendFormat": "{{instance}}",
-                    "refId": "A"
-                }
-            ],
-            "thresholds": [],
-            "timeFrom": null,
-            "timeRegions": [],
-            "timeShift": null,
-            "title": "Instances total",
+            "title": "etcd Failed RPCs",
             "tooltip": {
                 "shared": true,
                 "sort": 0,
@@ -1247,7 +1159,7 @@
                     "label": null,
                     "logBase": 1,
                     "max": null,
-                    "min": "0",
+                    "min": null,
                     "show": true
                 },
                 {
@@ -1269,11 +1181,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -1282,7 +1193,7 @@
             "gridPos": {
                 "h": 7,
                 "w": 5,
-                "x": 5,
+                "x": 0,
                 "y": 22
             },
             "hiddenSeries": false,
@@ -1300,7 +1211,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1362,11 +1273,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -1375,7 +1285,7 @@
             "gridPos": {
                 "h": 7,
                 "w": 5,
-                "x": 10,
+                "x": 5,
                 "y": 22
             },
             "hiddenSeries": false,
@@ -1393,7 +1303,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1455,11 +1365,10 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": null,
+            "datasource": "grafanacloud-fifthdomain-prom",
             "fieldConfig": {
                 "defaults": {
-                    "custom": {},
-                    "links": []
+                    "custom": {}
                 },
                 "overrides": []
             },
@@ -1468,8 +1377,8 @@
             "gridPos": {
                 "h": 7,
                 "w": 5,
-                "x": 15,
-                "y": 23
+                "x": 10,
+                "y": 22
             },
             "hiddenSeries": false,
             "id": 24,
@@ -1486,7 +1395,7 @@
             "linewidth": 1,
             "nullPointMode": "null",
             "percentage": false,
-            "pluginVersion": "7.1.0",
+            "pluginVersion": "7.1.1",
             "pointradius": 2,
             "points": false,
             "renderer": "flot",
@@ -1548,6 +1457,98 @@
                 "align": false,
                 "alignLevel": null
             }
+        },
+        {
+            "aliasColors": {},
+            "bars": false,
+            "dashLength": 10,
+            "dashes": false,
+            "datasource": "grafanacloud-fifthdomain-prom",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {}
+                },
+                "overrides": []
+            },
+            "fill": 1,
+            "fillGradient": 0,
+            "gridPos": {
+                "h": 7,
+                "w": 5,
+                "x": 15,
+                "y": 22
+            },
+            "hiddenSeries": false,
+            "id": 23,
+            "legend": {
+                "avg": false,
+                "current": false,
+                "max": false,
+                "min": false,
+                "show": true,
+                "total": false,
+                "values": false
+            },
+            "lines": true,
+            "linewidth": 1,
+            "nullPointMode": "null",
+            "percentage": false,
+            "pluginVersion": "7.1.1",
+            "pointradius": 2,
+            "points": false,
+            "renderer": "flot",
+            "seriesOverrides": [],
+            "spaceLength": 10,
+            "stack": false,
+            "steppedLine": false,
+            "targets": [
+                {
+                    "expr": "etcd_mvcc_db_total_size_in_bytes",
+                    "interval": "",
+                    "legendFormat": "{{instance}}",
+                    "refId": "A"
+                }
+            ],
+            "thresholds": [],
+            "timeFrom": null,
+            "timeRegions": [],
+            "timeShift": null,
+            "title": "etcd DB Size",
+            "tooltip": {
+                "shared": true,
+                "sort": 0,
+                "value_type": "individual"
+            },
+            "type": "graph",
+            "xaxis": {
+                "buckets": null,
+                "mode": "time",
+                "name": null,
+                "show": true,
+                "values": []
+            },
+            "yaxes": [
+                {
+                    "format": "bytes",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                },
+                {
+                    "format": "short",
+                    "label": null,
+                    "logBase": 1,
+                    "max": null,
+                    "min": null,
+                    "show": true
+                }
+            ],
+            "yaxis": {
+                "align": false,
+                "alignLevel": null
+            }
         }
     ],
     "refresh": "10s",
@@ -1560,7 +1561,7 @@
         "list": []
     },
     "time": {
-        "from": "now-3h",
+        "from": "now-1h",
         "to": "now"
     },
     "timepicker": {
@@ -1577,7 +1578,7 @@
         ]
     },
     "timezone": "",
-    "title": "Shaken Fist",
+    "title": "Shaken Fist Busy",
     "uid": "8EQRw7kMz",
-    "version": 4
+    "version": 7
 }
