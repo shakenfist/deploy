@@ -25,4 +25,4 @@
     state: absent
 
 - name: Update setuptools
-  shell: pip3 install -U setuptools wheel
+  shell: pip3 install -U setuptools wheel gunicorn
