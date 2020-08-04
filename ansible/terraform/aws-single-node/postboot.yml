@@ -17,8 +17,9 @@
     done
     echo "Available NVME devices: $available_nvme"
 
+    apt-get install -y xfsprogs
     mdadm --create /dev/md0 --level=0 --raid-devices=2 `echo $available_nvme | cut -f 1 -d ","`n1 `echo $available_nvme | cut -f 2 -d ","`n1
-    mkfs.ext4 /dev/md0
+    mkfs.xfs /dev/md0
     mount /dev/md0 /srv
 
 - name: Determine network node
