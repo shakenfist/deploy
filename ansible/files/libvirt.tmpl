@@ -35,6 +35,7 @@
     <disk type='file' device='{{disk.present_as}}'>
       <driver name='qemu' type='{{disk.type}}'/>
       <source file='{{disk.path}}'/>
+      {{disk.backing}}
       <target dev='{{disk.device}}' bus='{{disk.bus}}'/>
     </disk>
     {% endfor %}
