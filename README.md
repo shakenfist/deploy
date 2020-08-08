@@ -15,7 +15,7 @@ Build an acceptable deployment, noting that only Ubuntu is supported.
 ## Common first steps
 
 ```bash
-sudo apt-get install ansible tox pwgen
+sudo apt-get install ansible tox pwgen build-essential python3-dev python3-wheel
 git clone https://github.com/shakenfist/deploy
 cd deploy
 git submodule init
