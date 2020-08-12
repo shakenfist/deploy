@@ -1,0 +1,39 @@
+---
+- name: Ensure unit tests pass
+  shell:
+    cmd: tox -epy3
+    chdir: ../shakenfist
+  when: release == "git"
+
+- name: Clear out old wheels
+  file:
+    path: ../shakenfist/dist
+    state: absent
+  when: release == "git"
+
+- name: Ensure we have a local dist directory
+  file:
+    path: ../shakenfist/dist
+    state: directory
+  when: release == "git"
+
+- name: Build a wheel for shakenfist
+  shell:
+    cmd: python3 setup.py sdist bdist_wheel
+    chdir: ../shakenfist
+  when: release == "git"
+
+- name: Find the most recent wheel for shakenfist
+  shell: ls -rt ../shakenfist/dist/*.whl | tail -1 | sed 's/\.\.\/shakenfist\/dist\///'
+  register: wheel_complex
+  when: release == "git"
+
+- name: Extract wheel filename
+  set_fact:
+    wheel_path: "{{wheel_complex.stdout}}"
+  when: release == "git"
+
+- name: Log wheel details
+  debug:
+    msg: "Wheel is: {{hostvars['localhost']['wheel_path']}}"
+  when: release == "git"
