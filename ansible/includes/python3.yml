@@ -26,3 +26,6 @@
 
 - name: Update setuptools
   shell: pip3 install -U setuptools wheel
+
+- name: Install gunicorn
+  shell: pip3 install -U gunicorn

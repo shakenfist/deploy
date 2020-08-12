@@ -8,7 +8,6 @@ shakenfist_deps:
   - dnsutils
   - etcd-client
   - git
-  - "{{ 'gunicorn3' if ansible_distribution_version < '20.04' else 'gunicorn' }}"
   - libssl-dev
   - libvirt-daemon-system
   - libvirt-dev
