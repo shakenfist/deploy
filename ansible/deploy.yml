@@ -116,7 +116,7 @@
     - name: Abort if default interface MTU is too low
       fail:
         msg: "Node MTU is too low."
-      when: node_mtu|int < 2000
+      when: node_mtu|int < 2000 and cloud != "gcp"
 
     - name: Make /srv/shakenfist/
       file:
@@ -157,7 +157,7 @@
 
     - name: Copy shakenfist
       synchronize:
-        src: ../shakenfist/dist/{{hostvars['localhost']['wheel_path']}}
+        src: ../gitrepos/shakenfist/dist/{{hostvars['localhost']['wheel_path']}}
         dest: /srv/shakenfist/
       when: release == "git"
 

@@ -48,11 +48,3 @@
         owner: root
         group: root
         mode: u=rx
-
-    - name: Copy cleanup script
-      copy:
-        src: ../shakenfist/cleanup.sh
-        dest: /srv/shakenfist/cleanup.sh
-        owner: root
-        group: root
-        mode: u=rx,g=rx,o=rx
