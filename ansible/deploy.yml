@@ -11,14 +11,6 @@
     - name: Load default vars
       include_vars: main.yml
 
-    - name: Install deps for Git based deploy
-      apt:
-        name: "{{ shakenfist_deps_git_deploy }}"
-        state: latest
-        update_cache: yes
-      when: release == "git"
-      become: yes
-
     - name: Ensure unit tests pass
       shell:
         cmd: tox -epy3
