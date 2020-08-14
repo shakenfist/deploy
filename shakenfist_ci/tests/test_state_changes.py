@@ -45,6 +45,7 @@ class TestStateChanges(base.BaseTestCase):
 
         self.assertIsNotNone(inst['uuid'])
         last_prompt = self._await_login_prompt(inst['uuid'])
+        self._test_ping(self.net['uuid'], ip, True)
 
         # Soft reboot
         self.test_client.reboot_instance(inst['uuid'])
