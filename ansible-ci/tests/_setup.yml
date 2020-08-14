@@ -34,13 +34,12 @@
       rm -rf /srv/shakenfist/dhcp
       rm -rf /srv/shakenfist/image_cache/*.qcow2.*G
 
-      ip link del phy-br-ens4
       for i in `seq 100`
       do
-        ip link del br-vxlan-$i
-        ip link del vxlan-$i
-        ip link del phy-$i-o
-        ip link del veth-$i-o
+        ip link del br-vxlan-$i || true
+        ip link del vxlan-$i || true
+        ip link del phy-$i-o || true
+        ip link del veth-$i-o || true
       done
 
       if [ -e /var/run/netns ]
