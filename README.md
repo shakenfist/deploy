@@ -24,7 +24,6 @@ configuration found in deploy/ansible/terraform/<cloud> where "cloud" is one of 
 ```bash
 sudo apt-get install ansible tox pwgen build-essential python3-dev python3-wheel
 git clone https://github.com/shakenfist/deploy
-cd deploy/ansible
 ansible-galaxy install andrewrothstein.etcd-cluster andrewrothstein.terraform andrewrothstein.go
 ```
 
@@ -72,7 +71,8 @@ $ cat ~/sf-deploys/cbr-remote.sh
 #!/bin/bash
 
 export CLOUD=metal
-export VARIABLES="ADMIN_PASSWORD=p4ssw0rd FLOATING_IP_BLOCK=192.168.20.0/24"
+export ADMIN_PASSWORD="p4ssw0rd"
+export FLOATING_IP_BLOCK="192.168.20.0/24"
 export BOOTDELAY=0
 
 # Tests are not currently safe for clusters whose data you are fond of
