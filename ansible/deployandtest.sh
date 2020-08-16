@@ -152,7 +152,67 @@ set -x
 #### Release selection, git or a version from pypi
 if [ -z "$RELEASE" ]
 then
-  RELEASE="0.2.3"
+  # This is the latest version from pypi
+  RELEASE=`curl -s https://pypi.org/simple/shakenfist/ | grep whl | sed -e 's/.*shakenfist-//' -e 's/-py3.*//' | tail -1`
+fi
+
+cwd=`pwd`
+if [ `echo $RELEASE | cut -f 1 -d ":"` == "git" ]
+then
+  for repo in shakenfist client-python ansible-modules
+  do
+    if [ ! -e ../gitrepos/$repo ]
+    then
+      git clone https://github.com/shakenfist/$repo ../gitrepos/$repo
+    else
+      
+      cd ../gitrepos/$repo
+      git fetch
+    fi
+    cd $cwd
+  done
+
+  branch=`echo $RELEASE | cut -f 2 -d ":"`
+
+  cd ../gitrepos/shakenfist
+  if [ `git branch | grep -c $branch` -lt 1 ]
+  then
+    echo "===== Requested branch ($branch) does not exist for shakenfist/shakenfist"
+    exit 1
+  fi
+  git checkout $branch
+  cd $cwd
+  
+  for repo in client-python ansible-modules
+  do
+    cd ../gitrepos/$repo
+    if [ `git branch | grep -c $branch` -gt 1 ]
+    then
+      git checkout $branch
+    fi
+    cd $cwd
+  done
+
+  RELEASE="git"
+else
+  # NOTE(mikal): this is a hack until we use ansible galaxy for these modules
+  for repo in ansible-modules
+  do
+    if [ ! -e ../gitrepos/$repo ]
+    then
+      git clone https://github.com/shakenfist/$repo ../gitrepos/$repo
+    else
+      cd ../gitrepos/$repo
+      git fetch
+    fi
+    cd $cwd
+    cd ../gitrepos/$repo
+    if [ `git branch | grep -c $branch` -gt 1 ]
+    then
+      git checkout $branch
+    fi
+    cd $cwd
+  done
 fi
 VARIABLES="$VARIABLES release=$RELEASE"
 

@@ -133,3 +133,6 @@ dmypy.json
 # Terraform
 .terraform/
 *.tfstate*
+
+# Git repos
+gitrepos/

@@ -11,7 +11,21 @@
     - name: Load default vars
       include_vars: main.yml
 
-    - include_tasks: tasks/build-wheel.yml
+    - include: tasks/build-wheel.yml
+        repo="shakenfist"
+        package="shakenfist"
+      when: release == "git"
+
+    - include: tasks/build-wheel.yml
+        repo="client-python"
+        package="shakenfist_client"
+      when: release == "git"
+
+    - name: Log wheel details
+      debug:
+        msg:
+          - "Shakenfist wheel is: {{hostvars['localhost']['shakenfist_wheel_path']}}"
+          - "Shakenfist client wheel is: {{hostvars['localhost']['shakenfist_client_wheel_path']}}"
 
     - name: Generate a random auth secret
       set_fact:
@@ -116,7 +130,7 @@
     - name: Abort if default interface MTU is too low
       fail:
         msg: "Node MTU is too low."
-      when: node_mtu|int < 2000
+      when: node_mtu|int < 2000 and cloud != "gcp"
 
     - name: Make /srv/shakenfist/
       file:
@@ -152,27 +166,43 @@
 
     - name: Remove old wheels
       file:
-        path: /srv/shakenfist/shakenfist-*-py3-none-any.whl
+        path: /srv/shakenfist/shakenfist*-py3-none-any.whl
         state: absent
 
     - name: Copy shakenfist
       synchronize:
-        src: ../shakenfist/dist/{{hostvars['localhost']['wheel_path']}}
+        src: ../gitrepos/shakenfist/dist/{{hostvars['localhost']['shakenfist_wheel_path']}}
+        dest: /srv/shakenfist/
+      when: release == "git"
+
+    - name: Copy shakenfist client
+      synchronize:
+        src: ../gitrepos/client-python/dist/{{hostvars['localhost']['shakenfist_client_wheel_path']}}
         dest: /srv/shakenfist/
       when: release == "git"
 
     - name: Uninstall shakenfist, if present
-      command: pip3 uninstall -y shakenfist
+      command: pip3 uninstall -y shakenfist shakenfist-client
       ignore_errors: True
 
     - name: Install shakenfist
-      command: pip3 install {{hostvars['localhost']['wheel_path']}}
+      command: pip3 install {{hostvars['localhost']['shakenfist_wheel_path']}}
+      args:
+        chdir: /srv/shakenfist/
+      when: release == "git"
+
+    - name: Install shakenfist client
+      command: pip3 install {{hostvars['localhost']['shakenfist_client_wheel_path']}}
       args:
         chdir: /srv/shakenfist/
       when: release == "git"
 
     - name: Install shakenfist from pypi
       command: pip3 install shakenfist=={{release}}
+      when: release != "git"
+
+    - name: Install shakenfist client from pypi
+      command: pip3 install shakenfist-client=={{release}}
       when: release != "git"
 
     - name: Create config directory

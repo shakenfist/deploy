@@ -21,7 +21,35 @@
     content: |
       #!/bin/bash -e
 
-      /srv/shakenfist/cleanup.sh
+      . /etc/sf/sfrc
+
+      for vm in `virsh list --all | tr -s " " | grep "sf:" | cut -f 3 -d " "`
+      do
+          virsh destroy $vm
+          virsh undefine $vm
+      done
+
+      rm -rf /srv/shakenfist/instances
+      rm -rf /srv/shakenfist/snapshots
+      rm -rf /srv/shakenfist/dhcp
+      rm -rf /srv/shakenfist/image_cache/*.qcow2.*G
+
+      for i in `seq 100`
+      do
+        ip link del br-vxlan-$i || true
+        ip link del vxlan-$i || true
+        ip link del phy-$i-o || true
+        ip link del veth-$i-o || true
+      done
+
+      if [ -e /var/run/netns ]
+      then
+        for ns in `ls /var/run/netns`
+        do
+          ip netns del $ns
+        done
+      fi
+
       [ `virsh list | grep running | wc -l` -eq 0 ]
       [ `ifconfig | grep -c br-vxlan` -eq 0 ]
 
