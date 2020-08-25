@@ -7,6 +7,12 @@
     content: |
       #!/bin/bash -e
 
+      while [ `sf-client instance events {{uuid}} | grep -c "login prompt"` -lt 1 ]
+      do
+        echo "Waiting for login prompt..."
+        sleep 10
+      done
+
       [ `/opt/telnet_client.py {{console_port}} ifconfig eth0 | grep -c "{{netblock_octets}}"` -eq 1 ]
       [ `/opt/telnet_client.py {{console_port}} cat /etc/resolv.conf | grep -c "8.8.8.8"` -eq 1 ]
       [ `/opt/telnet_client.py {{console_port}} netstat -rn | grep -c "{{netblock_octets}}.1"` -eq 1 ]

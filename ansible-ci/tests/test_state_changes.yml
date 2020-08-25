@@ -10,37 +10,41 @@
   connection: ssh
 
   tasks:
-    - include: _util_instance_reboot.yml
-        uuid={{cirros_uuid}}
-        type=soft
+      - include: _util_instance_reboot.yml
+            uuid={{cirros_uuid}}
+            type=soft
 
-    - include: _util_network_cirros_validate.yml
-        console_port="{{cirros_console_port}}"
-        netblock_octets="192.168.242"
+      - include: _util_network_cirros_validate.yml
+            console_port="{{cirros_console_port}}"
+            uuid="{{cirros_uuid}}"
+            netblock_octets="192.168.242"
 
-    - include: _util_instance_reboot.yml
-        uuid={{cirros_uuid}}
-        type=hard
+      - include: _util_instance_reboot.yml
+            uuid={{cirros_uuid}}
+            type=hard
 
-    - include: _util_network_cirros_validate.yml
-        console_port="{{cirros_console_port}}"
-        netblock_octets="192.168.242"
+      - include: _util_network_cirros_validate.yml
+            console_port="{{cirros_console_port}}"
+            uuid="{{cirros_uuid}}"
+            netblock_octets="192.168.242"
 
-    - include: _util_instance_halt.yml
-        uuid={{cirros_uuid}}
-        action_one=poweroff
-        action_two=poweron
+      - include: _util_instance_halt.yml
+            uuid={{cirros_uuid}}
+            action_one=poweroff
+            action_two=poweron
 
-    - include: _util_network_cirros_validate.yml
-        console_port="{{cirros_console_port}}"
-        netblock_octets="192.168.242"
+      - include: _util_network_cirros_validate.yml
+            console_port="{{cirros_console_port}}"
+            uuid="{{cirros_uuid}}"
+            netblock_octets="192.168.242"
 
-    - include: _util_instance_halt.yml
-        uuid={{cirros_uuid}}
-        ip={{cirros_uuid}}
-        action_one=pause
-        action_two=unpause
+      - include: _util_instance_halt.yml
+            uuid={{cirros_uuid}}
+            ip={{cirros_uuid}}
+            action_one=pause
+            action_two=unpause
 
-    - include: _util_network_cirros_validate.yml
-        console_port="{{cirros_console_port}}"
-        netblock_octets="192.168.242"
+      - include: _util_network_cirros_validate.yml
+            console_port="{{cirros_console_port}}"
+            uuid="{{cirros_uuid}}"
+            netblock_octets="192.168.242"

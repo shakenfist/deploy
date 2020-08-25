@@ -138,6 +138,7 @@
 
     - include: _util_network_cirros_validate.yml
         console_port="{{cirros_net_two_console_port}}"
+        uuid="{{cirros_net_two_uuid}}"
         netblock_octets="192.168.240"
 
     - name: Check we can't talk to the other virtual network
@@ -179,6 +180,7 @@
 
     - include: _util_network_cirros_validate.yml
         console_port="{{cirros_net_three_console_port}}"
+        uuid="{{cirros_net_three_uuid}}"
         netblock_octets="192.168.242"
 
     - name: Check we can't talk to the other virtual network
