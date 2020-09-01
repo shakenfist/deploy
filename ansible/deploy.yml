@@ -4,9 +4,11 @@
   connection: ssh
   vars:
     release: git
+    mode: deploy
 
   tasks:
     - include_tasks: tasks/distro-check.yml
+      when: mode == "deploy"
 
     - name: Load default vars
       include_vars: main.yml
@@ -30,12 +32,15 @@
     - name: Generate a random auth secret
       set_fact:
         auth_secret: "{{ lookup('password', '/dev/null length=30 chars=ascii_letters') }}"
+      when: mode == "deploy"
 
     - include: terraform/{{cloud}}/terraform.yml
+      when: mode == "deploy"
 
     - name: Wait for instances to boot
       pause:
         minutes: "{{bootdelay}}"
+      when: mode == "deploy"
 
 - hosts: hypervisors
   any_errors_fatal: true
@@ -43,6 +48,9 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
+  vars:
+    release: git
+    mode: deploy
 
   tasks:
     - include: terraform/{{cloud}}/postboot.yml
@@ -53,6 +61,9 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
+  vars:
+    release: git
+    mode: deploy
 
   tasks:
     - name: Write syslog file
@@ -62,12 +73,46 @@
         owner: root
         group: sudo
         mode: u=r,g=r,o=
+      when: mode == "deploy"
 
     - name: Restart syslog
       service:
         name: rsyslog
         enabled: yes
         state: restarted
+      when: mode == "deploy"
+
+    - name: Configure KSM to be sensible on boot
+      copy:
+        content: |
+          w /sys/kernel/mm/ksm/run - - - - 1
+          w /sys/kernel/mm/ksm/pages_to_scan - - - - 1000000
+          w /sys/kernel/mm/ksm/merge_across_nodes - - - - 0
+        dest: /etc/tmpfiles.d/sf-ksm.conf
+        owner: root
+        mode: u=r,g=r,o=r
+
+    # merge_across_nodes requires a reboot, so is skipped below
+    - name: Configure KSM to be sensible now
+      shell: |
+        echo "1" > /sys/kernel/mm/ksm/run
+        echo "100000" > /sys/kernel/mm/ksm/pages_to_scan
+      ignore_errors: True
+
+    - name: Configure IPv6 to be disabled on boot
+      copy:
+        content: |
+          net.ipv6.conf.all.disable_ipv6 = 1
+          net.ipv6.conf.default.disable_ipv6 = 1
+        dest: /etc/sysctl.d/10-sf-ipv6.conf
+        owner: root
+        mode: u=r,g=r,o=r
+
+    - name: Configure IPv6 to be disabled now
+      shell: |
+        sysctl -w net.ipv6.conf.all.disable_ipv6=1
+        sysctl -w net.ipv6.conf.default.disable_ipv6=1
+      ignore_errors: True
 
 - hosts: allsf
   any_errors_fatal: true
@@ -75,11 +120,15 @@
   become_method: sudo
   gather_facts: yes
   connection: ssh
+  vars:
+    release: git
+    mode: deploy
 
   tasks:
     - name: Syslog server is DB server
       set_fact:
         syslog: "{{hostvars['localhost']['database_node_ip']}}"
+      when: mode == "deploy"
 
     - name: Send syslog to the DB server, unless I am the DB server
       template:
@@ -88,22 +137,24 @@
         owner: root
         group: sudo
         mode: u=r,g=r,o=
-      when: hostvars['localhost']['database_node_ip'] != node_ip
+      when: hostvars['localhost']['database_node_ip'] != node_ip and mode == "deploy"
 
     - name: Restart syslog
       service:
         name: rsyslog
         enabled: yes
         state: restarted
-      when: hostvars['localhost']['database_node_ip'] != node_ip
+      when: hostvars['localhost']['database_node_ip'] != node_ip and mode == "deploy"
 
     - name: Load default vars
       include_vars: main.yml
 
     - include: includes/debian.yml
+      when: mode == "deploy"
 
     - name: Check that we can run KVM
       shell: kvm-ok
+      when: mode == "deploy"
 
     - name: Determine default interface
       shell: ip route list default | head -1 | cut -f 5 -d " "
@@ -118,25 +169,29 @@
     - name: Determine default interface MTU
       shell: ip link show {{node_egress_nic}} | grep mtu | sed -e 's/.*mtu //' -e 's/ .*//'
       register: node_mtu_complex
+      when: mode == "deploy"
 
     - name: Extract default interface MTU
       set_fact:
         node_mtu: "{{node_mtu_complex.stdout}}"
+      when: mode == "deploy"
 
     - name: Log node MTU
       debug:
         msg: "Node MTU is {{node_mtu}}"
+      when: mode == "deploy"
 
     - name: Abort if default interface MTU is too low
       fail:
         msg: "Node MTU is too low."
-      when: node_mtu|int < 2000 and cloud != "gcp"
+      when: node_mtu|int < 2000 and cloud != "gcp" and mode == "deploy"
 
     - name: Make /srv/shakenfist/
       file:
         path: /srv/shakenfist
         state: directory
         mode: "0755"
+      when: mode == "deploy"
 
 # Install etcd on all nodes, with members of etcd-master being voting nodes
 - hosts: etcd
@@ -146,6 +201,7 @@
       etcd_cluster_name: shakenfist
       etcd_enable_v2: False
       etcd_master_group_name: etcd_master
+      when: mode == "deploy"
 
 - hosts: allsf
   any_errors_fatal: true
@@ -155,14 +211,17 @@
   connection: ssh
   vars:
     release: git
+    mode: deploy
 
   tasks:
     - include: includes/python3.yml
+      when: mode == "deploy"
 
     - name: Ensure the source directory is absent
       file:
         path: /srv/shakenfist/src/
         state: absent
+      when: mode == "deploy"
 
     - name: Remove old wheels
       file:
@@ -210,16 +269,18 @@
         path: /etc/sf
         state: directory
         mode: "0755"
+      when: mode == "deploy"
 
     - name: Set system key from extra-vars
       set_fact:
         system_key: "{{admin_password}}"
+      when: mode == "deploy"
 
     - name: Use Hashicorp Vault for "system" namespace key (if enabled)
       block:
         - set_fact:
             system_key: "{{lookup('hashivault', '{{vault_system_key_path}}', 'key')}}"
-          when: vault_system_key_path is defined
+          when: vault_system_key_path is defined and mode == "deploy"
 
       rescue:
         - fail:
@@ -232,6 +293,7 @@
         owner: root
         group: sudo
         mode: u=r,g=r,o=
+      when: mode == "deploy"
 
     - name: Install sfrc for root user
       lineinfile:
@@ -239,6 +301,7 @@
         create: yes
         regexp: ". /etc/sf/sfrc"
         line: ". /etc/sf/sfrc"
+      when: mode == "deploy"
 
     - name: Write a global auth file
       template:
@@ -247,6 +310,7 @@
         owner: root
         group: sudo
         mode: u=r,g=r,o=
+      when: mode == "deploy"
 
 - hosts: db
   any_errors_fatal: true
@@ -254,16 +318,21 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
+  vars:
+    release: git
+    mode: deploy
 
   tasks:
     - name: Install prometheus
       apt:
         name: prometheus
         state: latest
+      when: mode == "deploy"
 
     - name: Read local prometheus customizations
       set_fact:
         prom_additional: "{{lookup('file', 'terraform/{{cloud}}/prometheus.yml') }}"
+      when: mode == "deploy"
 
     - name: Write prometheus configuration file
       copy:
@@ -306,19 +375,17 @@
         dest: /etc/prometheus/prometheus.yml
         owner: root
         mode: u=rw,g=r,o=r
+      when: mode == "deploy"
 
     - name: Restart prometheus
       service:
         name: prometheus
         enabled: yes
         state: restarted
+      when: mode == "deploy"
 
     - include: includes/grafana.yml
-
-    # - name: Remove previous grafana auth
-    #   file:
-    #     path: /var/lib/grafana/grafana.db
-    #     state: absent
+      when: mode == "deploy"
 
     - name: Write grafana config
       template:
@@ -326,6 +393,7 @@
         dest: /etc/grafana/grafana.ini
         owner: root
         mode: u=rw,g=r,o=r
+      when: mode == "deploy"
 
     - name: Write grafana dashboard
       copy:
@@ -333,6 +401,7 @@
         dest: /etc/grafana/provisioning/dashboards/shakenfist.json
         owner: root
         mode: u=rw,g=r,o=r
+      when: mode == "deploy"
 
     - name: Write grafana dashboard config
       copy:
@@ -340,6 +409,7 @@
         dest: /etc/grafana/provisioning/dashboards/dashboards.yaml
         owner: root
         mode: u=rw,g=r,o=r
+      when: mode == "deploy"
 
     - name: Write prometheus grafana configuration file
       copy:
@@ -360,15 +430,18 @@
         dest: /etc/grafana/provisioning/datasources/prometheus.yml
         owner: root
         mode: u=rwx,g=r,o=r
+      when: mode == "deploy"
 
     - name: Restart grafana
       service:
         name: grafana-server
         enabled: yes
         state: restarted
+      when: mode == "deploy"
 
     - name: Create an admin namespace called "system" with one key configured
       shell: sf-passwd deploy "{{system_key}}"
+      when: mode == "deploy"
 
 - hosts: hypervisors
   any_errors_fatal: true
@@ -376,6 +449,9 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
+  vars:
+    release: git
+    mode: deploy
 
   tasks:
     - name: Create storage directory
@@ -383,6 +459,7 @@
         path: /srv/shakenfist
         state: directory
         mode: "0755"
+      when: mode == "deploy"
 
     - name: Copy libvirt template
       copy:
@@ -396,6 +473,7 @@
       shell: |
         virsh net-destroy default
       ignore_errors: True
+      when: mode == "deploy"
 
     - name: Copy dhcp config template
       copy:
@@ -423,23 +501,6 @@
         node_ip: "{{node_ip_complex.stdout}}"
       when: node_ip is not defined
 
-    - name: Configure KSM to be sensible on boot
-      copy:
-        content: |
-          w /sys/kernel/mm/ksm/run - - - - 1
-          w /sys/kernel/mm/ksm/pages_to_scan - - - - 1000000
-          w /sys/kernel/mm/ksm/merge_across_nodes - - - - 0
-        dest: /etc/tmpfiles.d/sf-ksm.conf
-        owner: root
-        mode: u=r,g=r,o=r
-
-    # merge_across_nodes requires a reboot, so is skipped below
-    - name: Configure KSM to be sensible now
-      shell: |
-        echo "1" > /sys/kernel/mm/ksm/run
-        echo "100000" > /sys/kernel/mm/ksm/pages_to_scan
-      ignore_errors: True
-
     - name: Write systemd unit
       template:
         src: files/sf.service
@@ -459,8 +520,10 @@
   roles:
     - role: andrewrothstein.terraform
       terraform_binary_dir: /usr/local/bin/terraform_install
+      when: mode == "deploy"
 
     - role: andrewrothstein.go
+      when: mode == "deploy"
 
 - hosts: db
   any_errors_fatal: true
@@ -468,24 +531,31 @@
   become_method: sudo
   gather_facts: no
   connection: ssh
+  vars:
+    release: git
+    mode: deploy
 
   tasks:
     - include: includes/ansible.yml
+      when: mode == "deploy"
 
     - name: Clear out old terraform providers
       file:
         path: /srv/shakenfist/terraform-provider-shakenfist
         state: absent
+      when: mode == "deploy"
 
     - name: Clone the terraform provider
       git:
         repo: https://github.com/shakenfist/terraform-provider-shakenfist
         dest: /srv/shakenfist/terraform-provider-shakenfist
+      when: mode == "deploy"
 
     - name: Build terraform provider
       shell:
         cmd: /usr/local/go/bin/go build
         chdir: /srv/shakenfist/terraform-provider-shakenfist
+      when: mode == "deploy"
 
     - name: Install terraform provider
       copy:
@@ -493,6 +563,7 @@
         dest: /usr/local/bin/terraform_install/terraform-provider-shakenfist
         remote_src: yes
         mode: u+rx,g+rx,o+rx
+      when: mode == "deploy"
 
     - name: Run any upgrade steps
       shell: sf-upgrade

@@ -108,6 +108,7 @@
   tasks:
     - include: _util_network_cirros_validate.yml
         console_port="{{cirros_console_port}}"
+        uuid="{{cirros_uuid}}"
         netblock_octets="192.168.242"
 
 - hosts: sf-1

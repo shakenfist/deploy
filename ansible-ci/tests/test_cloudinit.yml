@@ -36,6 +36,12 @@
         content: |
           #!/bin/bash -e
 
+          while [ `sf-client instance events {{cirros_with_extras_uuid}} | grep -c "login prompt"` -lt 1 ]
+          do
+            echo "Waiting for login prompt..."
+            sleep 10
+          done
+
           [ `/opt/telnet_client.py {{cirros_with_extras_console_port}} exists /home/cirros/output.txt | grep -c "File exists"` -eq 2 ]
           [ `/opt/telnet_client.py {{cirros_with_extras_console_port}} exists /home/cirros/.ssh/authorized_keys | grep -c "File exists"` -eq 2 ]
         dest: /tmp/shell_script

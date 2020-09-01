@@ -10,6 +10,7 @@
 CLOUD=${1:-$CLOUD}
 TERRAFORM_VARS=""
 ANSIBLE_VARS=""
+VERBOSE="-v"
 
 #### AWS
 if [ "$CLOUD" == "aws" ] || [ "$CLOUD" == "aws-single-node" ]
@@ -216,6 +217,12 @@ else
 fi
 VARIABLES="$VARIABLES release=$RELEASE"
 
+#### Mode selection, deploy or hotfix at this time
+if [ -z "$MODE" ]
+then
+  MODE="deploy"
+fi
+
 #### Default settings
 BOOTDELAY="${BOOTDELAY:-2}"
 ADMIN_PASSWORD="${ADMIN_PASSWORD:-Ukoh5vie}"
@@ -233,6 +240,7 @@ ANSIBLE_VARS="$ANSIBLE_VARS ansible_root=$cwd"
 ANSIBLE_VARS="$ANSIBLE_VARS uniqifier=$UNIQIFIER"
 ANSIBLE_VARS="$ANSIBLE_VARS admin_password=$ADMIN_PASSWORD"
 ANSIBLE_VARS="$ANSIBLE_VARS floating_network_ipblock=$FLOATING_IP_BLOCK"
+ANSIBLE_VARS="$ANSIBLE_VARS mode=$MODE"
 
 echo "VARIABLES: $VARIABLES"
 
@@ -242,24 +250,24 @@ do
   ANSIBLE_VARS="$ANSIBLE_VARS $var"
 done
 
-ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" deploy.yml
+ansible-playbook $VERBOSE -i hosts --extra-vars "$ANSIBLE_VARS" deploy.yml
 
 if [ -e terraform/$CLOUD/local.yml ]
 then
-  ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" terraform/$CLOUD/local.yml
+  ansible-playbook $VERBOSE -i hosts --extra-vars "$ANSIBLE_VARS" terraform/$CLOUD/local.yml
 fi
 
 # Old fashioned ansible CI
 if [ "%$SKIP_SF_TESTS%" == "%%" ]
 then
-  ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" ../ansible-ci/pretest.yml
+  ansible-playbook $VERBOSE -i hosts --extra-vars "$ANSIBLE_VARS" ../ansible-ci/pretest.yml
   for playbook in `ls ../ansible-ci/tests/test_*.yml | grep -v test_final.yml | shuf`
   do
-    ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" $playbook
+    ansible-playbook $VERBOSE -i hosts --extra-vars "$ANSIBLE_VARS" $playbook
   done
 
-  ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" ../ansible-ci/tests/test_final.yml
+  ansible-playbook $VERBOSE -i hosts --extra-vars "$ANSIBLE_VARS" ../ansible-ci/tests/test_final.yml
 
   # New fangled python CI
-  ansible-playbook -i hosts --extra-vars "$ANSIBLE_VARS" test.yml
+  ansible-playbook $VERBOSE -i hosts --extra-vars "$ANSIBLE_VARS" test.yml
 fi

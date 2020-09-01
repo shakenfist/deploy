@@ -23,8 +23,9 @@
   debug:
     msg: "{{instance_create_out}}"
 
-- name: Pause very briefly
-  shell: sleep 10
+- name: Wait for instance to boot
+  pause:
+    minutes: 2
 
 - name: Count the number of VMs after
   virt:

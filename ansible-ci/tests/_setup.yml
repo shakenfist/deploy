@@ -5,9 +5,33 @@
       sf-client --simple instance delete $inst
     done
 
+    attempts=0
+    while [ `sf-client --simple instance list | grep -v uuid | wc -l` -gt 0 ]
+    do
+      attempts=$(( $attempts + 1))
+      sleep 10
+      if [ $attempts -gt 10 ]
+      then
+        echo "Failing after instance deletes did not complete"
+        exit 1
+      fi
+    done
+
     for net in `sf-client --simple network list | grep -v uuid | cut -f 1 -d ","`
     do
       sf-client --simple network delete $net
+    done
+
+    attempts=0
+    while [ `sf-client --simple network list | grep -v uuid | wc -l` -gt 0 ]
+    do
+      attempts=$(( $attempts + 1))
+      sleep 10
+      if [ $attempts -gt 10 ]
+      then
+        echo "Failing after network deletes did not complete"
+        exit 1
+      fi
     done
 
     for namespace in `sf-client --simple namespace list | grep -v uuid | grep -v system`
