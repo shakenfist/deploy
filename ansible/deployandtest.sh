@@ -228,7 +228,7 @@ BOOTDELAY="${BOOTDELAY:-2}"
 ADMIN_PASSWORD="${ADMIN_PASSWORD:-Ukoh5vie}"
 FLOATING_IP_BLOCK="${FLOATING_IP_BLOCK:-10.10.0.0/24}"
 UNIQIFIER="${UNIQIFIER:-$USER"-"`date "+%y%m%d"`"-"`pwgen --no-capitalize -n1`"-"}"
-
+KSM_ENABLED="${KSM_ENABLED:-1}"
 
 # Setup variables for consumption by ansible and terraform
 cwd=`pwd`
@@ -241,6 +241,7 @@ ANSIBLE_VARS="$ANSIBLE_VARS uniqifier=$UNIQIFIER"
 ANSIBLE_VARS="$ANSIBLE_VARS admin_password=$ADMIN_PASSWORD"
 ANSIBLE_VARS="$ANSIBLE_VARS floating_network_ipblock=$FLOATING_IP_BLOCK"
 ANSIBLE_VARS="$ANSIBLE_VARS mode=$MODE"
+ANSIBLE_VARS="$ANSIBLE_VARS ksm_enabled=$KSM_ENABLED"
 
 echo "VARIABLES: $VARIABLES"
 

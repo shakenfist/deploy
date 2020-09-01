@@ -95,6 +95,7 @@ with real users.
 | FLOATING_IP_BLOCK | All | The IP range to use for the floating network |
 | BOOTDELAY | All | How long to wait for terraform deployed instances to boot before continuing with install, in minutes |
 | SKIP_SF_TEST | All | Set to 1 to skip running destructive testing of the cloud |
+| KSM_ENABLED | All | Set to 1 to enable KSM, 0 to disable |
 | AWS_REGION | aws, aws-single-node | The AWS region to deploy in |
 | AWS_AVAILABILITY_ZONE | aws, aws-single-node | The AWS availability zone to deploy in |
 | AWS_VPC_ID | aws, aws-single-node | The AWS VPC to use |
