@@ -90,6 +90,7 @@ with real users.
 | Option | Terraform definition | Description |
 |--------|----------------------|-------------|
 | MODE | All | Options are "deploy" (the default) or "hotfix". Deploy performs a full install, whereas hotfix skips steps to try and push only changes to Shaken Fist code as quickly as possible. |
+| RELEASE | All | Which release to run. This can be a version number from pypi, the keyword "git" for the current state of master, or "git:branch" to use a branch called "branch" from your local git. |
 | CLOUD | All | The terraform definition to use |
 | ADMIN_PASSWORD | All | The admin password for the cloud once installed |
 | FLOATING_IP_BLOCK | All | The IP range to use for the floating network |
