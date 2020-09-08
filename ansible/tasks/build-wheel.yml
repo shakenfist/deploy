@@ -3,6 +3,7 @@
   shell:
     cmd: tox -epy3
     chdir: ../gitrepos/{{repo}}
+  tags: unittest
 
 - name: Clear out old wheels
   file:
