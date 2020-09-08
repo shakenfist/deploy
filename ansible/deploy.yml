@@ -35,7 +35,7 @@
       when: mode == "deploy"
 
     - include: terraform/{{cloud}}/terraform.yml
-      when: mode == "deploy"
+      when: mode == "deploy" or cloud == "metal"
 
     - name: Wait for instances to boot
       pause:
@@ -205,7 +205,7 @@
     - name: Abort if default interface MTU is too low
       fail:
         msg: "Node MTU is too low."
-      when: node_mtu|int < 2000 and cloud != "gcp" and mode == "deploy"
+      when: mode == "deploy" and cloud != "gcp" and node_mtu|int < 2000
 
     - name: Make /srv/shakenfist/
       file:
@@ -529,6 +529,7 @@
         owner: root
         group: root
         mode: u=r,g=r,o=r
+      when: auth_secret is defined
 
     - name: Start the SF daemon
       service:
