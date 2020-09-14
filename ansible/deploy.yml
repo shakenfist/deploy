@@ -529,7 +529,7 @@
         owner: root
         group: root
         mode: u=r,g=r,o=r
-      when: auth_secret is defined
+      when: mode != 'hotfix'
 
     - name: Start the SF daemon
       service:
