@@ -535,6 +535,7 @@
       shell: |
         journalctl --rotate
         journalctl --vacuum-time=2d
+        /usr/sbin/logrotate -f /etc/logrotate.conf
       ignore_errors: True
       when: mode == "deploy"
 
