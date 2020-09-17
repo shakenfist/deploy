@@ -61,8 +61,8 @@
         content: |
           #!/bin/bash -e
 
-          [ `grep -c "{{hostvars['sf-1']['cirros_ip']}}" /srv/shakenfist/dhcp/{{net_one_uuid}}/hosts` -eq 1 ]
-          [ `grep -c "{{hostvars['sf-2']['cirros_ip']}}" /srv/shakenfist/dhcp/{{net_one_uuid}}/hosts` -eq 1 ]
+          [ `egrep -c "{{hostvars['sf-1']['cirros_ip']}}$" /srv/shakenfist/dhcp/{{net_one_uuid}}/hosts` -eq 1 ]
+          [ `egrep -c "{{hostvars['sf-2']['cirros_ip']}}$" /srv/shakenfist/dhcp/{{net_one_uuid}}/hosts` -eq 1 ]
         dest: /tmp/shell_script
         owner: root
         group: root

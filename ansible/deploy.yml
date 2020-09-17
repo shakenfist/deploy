@@ -531,6 +531,14 @@
         mode: u=r,g=r,o=r
       when: mode != 'hotfix'
 
+    - name: Rotate logs and remove old logs
+      shell: |
+        journalctl --rotate
+        journalctl --vacuum-time=2d
+        /usr/sbin/logrotate -f /etc/logrotate.conf
+      ignore_errors: True
+      when: mode == "deploy"
+
     - name: Start the SF daemon
       service:
         name: sf
