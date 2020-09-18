@@ -1,12 +1,12 @@
 [local]
 localhost ansible_connection=local
 
-[db]
+[primary]
 
 [hypervisors]
 
 [allsf:children]
-  db
+  primary
   hypervisors
 
 [allsf:vars]

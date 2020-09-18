@@ -16,7 +16,7 @@
     ansible_ssh_host: "{{terraform_out.outputs.sf_1_external.value}}"
     ansible_user: "ubuntu"
     ansible_ssh_private_key_file: "~/.ssh/{{ssh_key_name}}.pem"
-    groups: hypervisors, db, etcd_master
+    groups: hypervisors, primary, etcd_master
 
 - name: Add sf-1 node_ip
   set_fact:

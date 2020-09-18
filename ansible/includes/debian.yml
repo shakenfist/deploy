@@ -5,7 +5,7 @@
     upgrade: dist
     autoremove: yes
 
-- name: Install dependancies
+- name: Install dependencies
   apt:
     name: "{{ shakenfist_deps }}"
     state: latest
