@@ -27,8 +27,8 @@
   delegate_to: localhost
   delegate_facts: true
 
-- name: Determine database node
+- name: Determine primary node
   set_fact:
-    database_node_ip: "{{hostvars['sf-single']['node_ip']}}"
+    primary_node_ip: "{{hostvars['sf-single']['node_ip']}}"
   delegate_to: localhost
   delegate_facts: true
