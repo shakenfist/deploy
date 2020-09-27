@@ -1,7 +1,7 @@
 # Fake terraform for a localhost deployment
 
 - name: Determine hostname
-  shell: hostname
+  shell: hostname -f
   register: hostname_complex
   ignore_errors: True
 
