@@ -5,8 +5,15 @@
   vars:
     release: git
     mode: deploy
+    ram_system_reservation: 5.0
 
   tasks:
+    - name: Set RAM reservation as a var
+      set_fact:
+        "ram_system_reservation": float({{ ram_system_reservation }})
+      delegate_to: localhost
+      delegate_facts: true
+
     - include_tasks: tasks/distro-check.yml
       when: mode == "deploy"
 
@@ -28,6 +35,7 @@
         msg:
           - "Shakenfist wheel is: {{hostvars['localhost']['shakenfist_wheel_path']}}"
           - "Shakenfist client wheel is: {{hostvars['localhost']['shakenfist_client_wheel_path']}}"
+      when: release == "git"
 
     - name: Generate a random auth secret
       set_fact:
@@ -40,7 +48,7 @@
     - name: Wait for instances to boot
       pause:
         minutes: "{{bootdelay}}"
-      when: mode == "deploy"
+      when: mode == "deploy" and cloud != "localhost"
 
 - hosts: hypervisors
   any_errors_fatal: true
@@ -174,6 +182,8 @@
       shell: kvm-ok
       when: mode == "deploy"
 
+    # NOTE(mikal): this might not be right if egress and meshes are on different
+    # interfaces.
     - name: Determine default interface
       shell: ip route list default | head -1 | cut -f 5 -d " "
       register: node_egress_nic_complex
@@ -202,7 +212,7 @@
     - name: Abort if default interface MTU is too low
       fail:
         msg: "Node MTU is too low."
-      when: mode == "deploy" and cloud != "gcp" and node_mtu|int < 2000
+      when: mode == "deploy" and cloud != "gcp"  and cloud != "localhost" and node_mtu|int < 2000
 
     - name: Make /srv/shakenfist/
       file:
