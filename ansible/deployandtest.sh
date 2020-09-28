@@ -104,6 +104,14 @@ then
   VARIABLES="$VARIABLES metal_ip_sf3=$METAL_IP_SF3"
 fi
 
+### Localhost
+if [ "$CLOUD" == "localhost" ]
+then
+  # CI is not supported on single node deploys
+  SKIP_SF_TESTS=1
+  ANSIBLE_VARS="$ANSIBLE_VARS ram_system_reservation=1.0"
+fi
+
 #### Shakenfist
 if [ "$CLOUD" == "shakenfist" ]
 then
@@ -127,7 +135,7 @@ if [ -z "$VARIABLES" ]
 then
 {
   echo ====
-  echo ==== CLOUD should be specified: aws, aws-single-node, gcp, metal, openstack, shakenfist
+  echo ==== CLOUD should be specified: aws, aws-single-node, gcp, localhost, metal, openstack, shakenfist
   echo ==== eg.  ./deployandtest/sh gcp
   echo ====
   echo ==== Continuing, because you might know what you are doing...
@@ -173,6 +181,10 @@ then
   done
 
   branch=`echo $RELEASE | cut -f 2 -d ":"`
+  if [ -z "$branch" ]
+  then
+    branch="master"
+  fi
 
   cd ../gitrepos/shakenfist
   if [ `git branch | grep -c $branch` -lt 1 ]
@@ -198,18 +210,16 @@ else
   # NOTE(mikal): this is a hack until we use ansible galaxy for these modules
   for repo in ansible-modules
   do
+    echo "Priming $repo"
+
     if [ ! -e ../gitrepos/$repo ]
     then
       git clone https://github.com/shakenfist/$repo ../gitrepos/$repo
     else
       cd ../gitrepos/$repo
       git fetch
-    fi
-    cd $cwd
-    cd ../gitrepos/$repo
-    if [ `git branch | grep -c $branch` -gt 1 ]
-    then
-      git checkout $branch
+      git checkout master
+      git pull
     fi
     cd $cwd
   done

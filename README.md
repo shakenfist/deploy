@@ -22,7 +22,7 @@ configuration found in deploy/ansible/terraform/<cloud> where "cloud" is one of 
 ### Common first steps
 
 ```bash
-sudo apt-get install ansible tox pwgen build-essential python3-dev python3-wheel
+sudo apt-get install ansible tox pwgen build-essential python3-dev python3-wheel curl
 git clone https://github.com/shakenfist/deploy
 ansible-galaxy install andrewrothstein.etcd-cluster andrewrothstein.terraform andrewrothstein.go
 ```
