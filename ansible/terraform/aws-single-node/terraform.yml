@@ -20,6 +20,7 @@
 
 - name: Add sf-single node_ip
   set_fact:
+    node_name: "sf-single"
     node_ip: "{{terraform_out.outputs.sf_single_internal.value}}"
   delegate_to: sf-single
   delegate_facts: true
