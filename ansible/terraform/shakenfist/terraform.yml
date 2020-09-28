@@ -18,6 +18,7 @@
 
 - name: Add sf-1 node_ip
   set_fact:
+    node_name: "sf-1"
     node_ip: "{{terraform_out.outputs.sf_1_internal.value}}"
   delegate_to: sf-1
   delegate_facts: true
@@ -31,6 +32,7 @@
 
 - name: Add sf-2 node_ip
   set_fact:
+    node_name: "sf-2"
     node_ip: "{{terraform_out.outputs.sf_2_internal.value}}"
   delegate_to: sf-2
   delegate_facts: true
@@ -44,6 +46,7 @@
 
 - name: Add sf-3 node_ip
   set_fact:
+    node_name: "sf-3"
     node_ip: "{{terraform_out.outputs.sf_3_internal.value}}"
   delegate_to: sf-3
   delegate_facts: true
