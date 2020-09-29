@@ -10,7 +10,7 @@
   tasks:
     - name: Set RAM reservation as a var
       set_fact:
-        "ram_system_reservation": float({{ ram_system_reservation }})
+        "ram_system_reservation": "{{ram_system_reservation}}"
       delegate_to: localhost
       delegate_facts: true
 
