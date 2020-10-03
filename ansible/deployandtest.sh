@@ -193,6 +193,7 @@ then
     exit 1
   fi
   git checkout $branch
+  git pull
   cd $cwd
   
   for repo in client-python ansible-modules
@@ -201,6 +202,7 @@ then
     if [ `git branch | grep -c $branch` -gt 1 ]
     then
       git checkout $branch
+      git pull
     fi
     cd $cwd
   done
