@@ -223,12 +223,13 @@
 
 # Install etcd on all nodes, with members of etcd-master being voting nodes
 - hosts: etcd
+  vars:
+    etcd_secure: False
+    etcd_cluster_name: shakenfist
+    etcd_enable_v2: False
+    etcd_master_group_name: etcd_master
   roles:
     - role: andrewrothstein.etcd-cluster
-      etcd_secure: False
-      etcd_cluster_name: shakenfist
-      etcd_enable_v2: False
-      etcd_master_group_name: etcd_master
       when: mode == "deploy"
 
 - hosts: allsf
