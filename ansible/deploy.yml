@@ -225,11 +225,12 @@
 - hosts: etcd
   roles:
     - role: andrewrothstein.etcd-cluster
-      etcd_secure: False
-      etcd_cluster_name: shakenfist
-      etcd_enable_v2: False
-      etcd_master_group_name: etcd_master
       when: mode == "deploy"
+      vars:
+        etcd_secure: False
+        etcd_cluster_name: shakenfist
+        etcd_enable_v2: False
+        etcd_master_group_name: etcd_master
 
 - hosts: allsf
   any_errors_fatal: true
